@@ -30,6 +30,7 @@ public class MetaObjectImpl implements MetaObject {
     public static void registerConfiguration(Conf conf) {
         HashMap<String, MetaObject> all = ALL.getOrDefault(conf.getID(), new HashMap<>());
         all.put(conf.getID(), conf);
+        ALL.put(conf.getID(), all);
         ROOT.put(conf.getID(), conf);
         conf.propagateParenthood();
     }
