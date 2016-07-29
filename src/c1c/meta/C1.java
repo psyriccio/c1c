@@ -1,0 +1,100 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package c1c.meta;
+
+import c1c.meta.generated.MetaObject;
+import c1c.meta.generated.Conf;
+import c1c.meta.generated.impl.JAXBContextFactory;
+import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+/**
+ *
+ * @author psyriccio
+ */
+public class C1 {
+
+    private static Consumer<Exception> exceptionsConsumer;
+    private static JAXBContext jaxbContext = null;
+    private static Marshaller marshaller = null;
+    private static Unmarshaller unmarshaller = null;
+
+    private static void inintJAXBContext() throws JAXBException {
+        if (jaxbContext == null) {
+            jaxbContext = JAXBContextFactory.createContext(
+                        "c1c.meta.generated",
+                        c1c.meta.generated.MetaObject.class.getClassLoader(),
+                        new HashMap());
+        }
+        marshaller = jaxbContext.createMarshaller();
+        unmarshaller = jaxbContext.createUnmarshaller();
+    }
+
+    public static <T> Stream<T> streamWith(T obj) {
+        return Lists.newArrayList(obj).stream();
+    }
+
+    public static JAXBContext getJAXBContext() throws JAXBException {
+        inintJAXBContext();
+        return jaxbContext;
+    }
+
+    public static void marshall(MetaObject obj, File file) {
+        try {
+            if (marshaller == null) {
+                inintJAXBContext();
+            }
+            marshaller.marshal(obj, file);
+        } catch (JAXBException ex) {
+            if(exceptionsConsumer != null) exceptionsConsumer.accept(ex);
+        }
+    }
+
+    public static Optional<MetaObject> unmarshall(File file) {
+        try {
+            if (unmarshaller == null) {
+                inintJAXBContext();
+            }
+            return Optional.ofNullable((MetaObject) unmarshaller.unmarshal(file));
+        } catch (JAXBException ex) {
+            if(exceptionsConsumer != null) exceptionsConsumer.accept(ex);
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<Conf> loadConfiguration(File file) throws JAXBException {
+        Optional<MetaObject> mopt = unmarshall(file);
+        Optional<Conf> copt = mopt.get().asConfOpt();
+        Conf conf = copt.get();
+        if(conf != null) registerConfiguration(conf);
+        return Optional.ofNullable(conf);
+    }
+
+    public static void registerConfiguration(Conf conf) {
+        c1c.meta.generated.impl.MetaObjectImpl.registerConfiguration(conf);
+    }
+
+    public static void registerConfiguration(Optional<Conf> conf) {
+        conf.ifPresent((cfg) -> registerConfiguration(cfg));
+    }
+
+    public static HashMap<String, MetaObject> getALL(Conf conf) {
+        return c1c.meta.generated.impl.MetaObjectImpl.ALL.getOrDefault(conf, new HashMap<>());
+    }
+
+    public static void setExceptionsConsumer(Consumer<Exception> exceptionsConsumer) {
+        C1.exceptionsConsumer = exceptionsConsumer;
+    }
+    
+}

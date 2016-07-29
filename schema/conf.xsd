@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+           xmlns:c1ex="http://github.com/psyriccio/c1ExchangeGen/c1c"
+           jaxb:extensionBindingPrefixes="xjc"
+           elementFormDefault="unqualified"
+           jaxb:version="2.0">
+           <xs:annotation>
+               <xs:appinfo>
+                   <jaxb:globalBindings generateValueClass="false">
+                       <xjc:superClass name="c1c.meta.generated.impl.MetaObjectImpl"/>
+                       <xjc:superInterface name="c1c.meta.generated.MetaObject"/>
+                       <xjc:simple />
+                   </jaxb:globalBindings>
+               </xs:appinfo>
+           </xs:annotation>
+  <xs:element name="Conf">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Catalog"/>
+        <xs:element maxOccurs="unbounded" ref="Document"/>
+      </xs:sequence>
+      <xs:attribute name="Name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Catalog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="Property"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="TabularSection"/>
+      </xs:sequence>
+      <xs:attribute name="CodeLength" use="required" type="xs:decimal"/>
+      <xs:attribute name="CodeType" use="required" type="xs:NCName"/>
+      <xs:attribute name="Description" use="required"/>
+      <xs:attribute name="DescriptionLength" use="required" type="xs:decimal"/>
+      <xs:attribute name="FullName" use="required" type="xs:NCName"/>
+      <xs:attribute name="Hierarchical" use="required" type="xs:boolean"/>
+      <xs:attribute name="LevelCount" use="required" type="xs:decimal"/>
+      <xs:attribute name="ListDescription" use="required"/>
+      <xs:attribute name="Name" use="required" type="xs:NCName"/>
+      <xs:attribute name="ObjectDescription" use="required"/>
+      <xs:attribute name="Synonym" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Document">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Property"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="TabularSection"/>
+      </xs:sequence>
+      <xs:attribute name="CodeLength" use="required" type="xs:decimal"/>
+      <xs:attribute name="CodeType" use="required" type="xs:NCName"/>
+      <xs:attribute name="Description" use="required"/>
+      <xs:attribute name="FullName" use="required" type="xs:NCName"/>
+      <xs:attribute name="ListDescription" use="required"/>
+      <xs:attribute name="Name" use="required" type="xs:NCName"/>
+      <xs:attribute name="ObjectDescription" use="required"/>
+      <xs:attribute name="Synonym" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Property">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="TypeDescription"/>
+      </xs:sequence>
+      <xs:attribute name="Description" use="required"/>
+      <xs:attribute name="FullName" use="required" type="xs:NCName"/>
+      <xs:attribute name="Name" use="required" type="xs:NCName"/>
+      <xs:attribute name="Synonym" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TypeDescription">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Type"/>
+      </xs:sequence>
+      <xs:attribute name="QDate" type="xs:NCName"/>
+      <xs:attribute name="QDigits" type="xs:decimal"/>
+      <xs:attribute name="QLength" type="xs:decimal"/>
+      <xs:attribute name="QLengthVariable" type="xs:boolean"/>
+      <xs:attribute name="QNotNegative" type="xs:boolean"/>
+      <xs:attribute name="QPrecission" type="xs:decimal"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Type">
+    <xs:complexType>
+      <xs:attribute name="Name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TabularSection">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Property"/>
+      </xs:sequence>
+      <xs:attribute name="Description" use="required"/>
+      <xs:attribute name="FullName" use="required"/>
+      <xs:attribute name="Name" use="required" type="xs:NCName"/>
+      <xs:attribute name="Synonym" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
