@@ -62,4 +62,9 @@ public class ConfImpl
         this.name = value;
     }
 
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
 }

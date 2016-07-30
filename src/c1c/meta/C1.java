@@ -33,9 +33,9 @@ public class C1 {
     private static void inintJAXBContext() throws JAXBException {
         if (jaxbContext == null) {
             jaxbContext = JAXBContextFactory.createContext(
-                        "c1c.meta.generated",
-                        c1c.meta.generated.MetaObject.class.getClassLoader(),
-                        new HashMap());
+                    "c1c.meta.generated",
+                    c1c.meta.generated.MetaObject.class.getClassLoader(),
+                    new HashMap());
         }
         marshaller = jaxbContext.createMarshaller();
         unmarshaller = jaxbContext.createUnmarshaller();
@@ -57,7 +57,9 @@ public class C1 {
             }
             marshaller.marshal(obj, file);
         } catch (JAXBException ex) {
-            if(exceptionsConsumer != null) exceptionsConsumer.accept(ex);
+            if (exceptionsConsumer != null) {
+                exceptionsConsumer.accept(ex);
+            }
         }
     }
 
@@ -68,7 +70,9 @@ public class C1 {
             }
             return Optional.ofNullable((MetaObject) unmarshaller.unmarshal(file));
         } catch (JAXBException ex) {
-            if(exceptionsConsumer != null) exceptionsConsumer.accept(ex);
+            if (exceptionsConsumer != null) {
+                exceptionsConsumer.accept(ex);
+            }
             return Optional.empty();
         }
     }
@@ -77,7 +81,9 @@ public class C1 {
         Optional<MetaObject> mopt = unmarshall(file);
         Optional<Conf> copt = mopt.get().asConfOpt();
         Conf conf = copt.get();
-        if(conf != null) registerConfiguration(conf);
+        if (conf != null) {
+            registerConfiguration(conf);
+        }
         return Optional.ofNullable(conf);
     }
 
@@ -90,11 +96,26 @@ public class C1 {
     }
 
     public static HashMap<String, MetaObject> getALL(Conf conf) {
-        return c1c.meta.generated.impl.MetaObjectImpl.ALL.getOrDefault(conf, new HashMap<>());
+        return c1c.meta.generated.impl.MetaObjectImpl.ALL.get(conf);
+    }
+
+    public static Optional<MetaObject> findObjDescription(Conf conf, String description) {
+        return Optional.ofNullable(
+                conf.getALL().values().stream()
+                .filter((obj) -> obj.getDescription().equals(description))
+                .findFirst().orElseGet(() -> {
+                    if (exceptionsConsumer != null) {
+                        exceptionsConsumer.accept(
+                                new RuntimeException("Cant find object " + description));
+                    }
+                    return null;
+                })
+        );
+
     }
 
     public static void setExceptionsConsumer(Consumer<Exception> exceptionsConsumer) {
         C1.exceptionsConsumer = exceptionsConsumer;
     }
-    
+
 }

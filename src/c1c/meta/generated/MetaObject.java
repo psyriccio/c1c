@@ -50,7 +50,7 @@ public interface MetaObject {
     public boolean isRef();
     
     public String getName();
-    public String getFullName();
+    public String getDescription();
     
     public HashMap<String, MetaObject> getALL();
     

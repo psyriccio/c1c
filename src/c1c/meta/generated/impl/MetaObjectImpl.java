@@ -230,13 +230,13 @@ public class MetaObjectImpl implements MetaObject {
     }
 
     @Override
-    public String getFullName() {
-        return "<EMPTY>";
+    public HashMap<String, MetaObject> getALL() {
+        return MetaObjectImpl.ALL.get(getRoot().getID());
     }
 
     @Override
-    public HashMap<String, MetaObject> getALL() {
-        return MetaObjectImpl.ALL.get(getRoot().getID());
+    public String getDescription() {
+        return "<ABSTRACT>";
     }
     
 }

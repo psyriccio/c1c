@@ -57,7 +57,7 @@ public class MetaVertualDirectory extends MetaObjectImpl {
     }
 
     @Override
-    public String getFullName() {
+    public String getDescription() {
         return fullName;
     }
     

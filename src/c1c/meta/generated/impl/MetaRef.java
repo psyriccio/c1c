@@ -225,8 +225,8 @@ public class MetaRef implements MetaObject {
     }
 
     @Override
-    public String getFullName() {
-        return (String) refPrc(destination.getFullName());
+    public String getDescription() {
+        return (String) refPrc(destination.getDescription());
     }
 
     @Override
