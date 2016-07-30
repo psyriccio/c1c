@@ -5,10 +5,9 @@
 
 package c1c.meta.generated;
 
-import c1c.meta.generated.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 // Referenced classes of package c1c.meta:
 //            MetaObjectClass
@@ -52,5 +51,7 @@ public interface MetaObject {
     
     public String getName();
     public String getFullName();
+    
+    public HashMap<String, MetaObject> getALL();
     
 }

@@ -14,6 +14,7 @@ import c1c.meta.generated.Property;
 import c1c.meta.generated.TabularSection;
 import c1c.meta.generated.Type;
 import c1c.meta.generated.TypeDescription;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -226,6 +227,11 @@ public class MetaRef implements MetaObject {
     @Override
     public String getFullName() {
         return (String) refPrc(destination.getFullName());
+    }
+
+    @Override
+    public HashMap<String, MetaObject> getALL() {
+        return destination.getALL();
     }
     
     @Override
