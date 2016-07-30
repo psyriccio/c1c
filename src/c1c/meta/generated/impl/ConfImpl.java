@@ -61,10 +61,10 @@ public class ConfImpl
     public void setName(String value) {
         this.name = value;
     }
-
+    
     @Override
     public String getDescription() {
-        return "";
+        return this.getName();
     }
 
 }

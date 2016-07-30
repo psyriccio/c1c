@@ -230,6 +230,11 @@ public class MetaRef implements MetaObject {
     }
 
     @Override
+    public String getFullName() {
+        return (String) refPrc(destination.getFullName());
+    }
+    
+    @Override
     public HashMap<String, MetaObject> getALL() {
         return destination.getALL();
     }

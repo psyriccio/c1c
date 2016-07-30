@@ -51,6 +51,7 @@ public interface MetaObject {
     
     public String getName();
     public String getDescription();
+    public String getFullName();
     
     public HashMap<String, MetaObject> getALL();
     

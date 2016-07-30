@@ -235,6 +235,11 @@ public class MetaObjectImpl implements MetaObject {
     }
 
     @Override
+    public String getFullName() {
+        return "";
+    }
+    
+    @Override
     public String getDescription() {
         return "<ABSTRACT>";
     }

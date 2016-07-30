@@ -99,14 +99,14 @@ public class C1 {
         return c1c.meta.generated.impl.MetaObjectImpl.ALL.get(conf);
     }
 
-    public static Optional<MetaObject> findObjDescription(Conf conf, String description) {
+    public static Optional<MetaObject> findObjFullName(Conf conf, String fullName) {
         return Optional.ofNullable(
                 conf.getALL().values().stream()
-                .filter((obj) -> obj.getDescription().equals(description))
+                .filter((obj) -> obj.getFullName().equals(fullName))
                 .findFirst().orElseGet(() -> {
                     if (exceptionsConsumer != null) {
                         exceptionsConsumer.accept(
-                                new RuntimeException("Cant find object " + description));
+                                new RuntimeException("Cant find object " + fullName));
                     }
                     return null;
                 })
