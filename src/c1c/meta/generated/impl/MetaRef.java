@@ -238,6 +238,11 @@ public class MetaRef implements MetaObject {
     public HashMap<String, MetaObject> getALL() {
         return destination.getALL();
     }
+
+    @Override
+    public List<MetaObject> getTypeReferences() {
+        return (List<MetaObject>) refPrc(destination.getTypeReferences());
+    }
     
     @Override
     public boolean isRef() {

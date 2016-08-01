@@ -55,13 +55,16 @@ public class MetaObjectImpl implements MetaObject {
     private final UUID id;
     private String rootID = "";
     private MetaObject parent = EMPTY;
+    private final List<MetaObject> typeReferences;
     
     public MetaObjectImpl() {
         this.id = UUID.randomUUID();
+        this.typeReferences = new ArrayList<>();
     }
 
     public MetaObjectImpl(UUID id) {
         this.id = id;
+        this.typeReferences = new ArrayList<>();
     }
 
     @Override
@@ -187,6 +190,9 @@ public class MetaObjectImpl implements MetaObject {
         hm.put(getID(), this);
         ALL.put(getRoot().getID(), hm);
         getChildrens().stream().forEach((MetaObject child) -> child.propagateParenthood());
+        ALL.get(getRoot().getID()).forEach((name, obj) -> {
+            obj.get
+        });
     }
 
     @Override
@@ -243,5 +249,11 @@ public class MetaObjectImpl implements MetaObject {
     public String getDescription() {
         return "<ABSTRACT>";
     }
+
+    @Override
+    public List<MetaObject> getTypeReferences() {
+        return this.typeReferences;
+    }
+    
     
 }

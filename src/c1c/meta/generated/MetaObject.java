@@ -55,4 +55,6 @@ public interface MetaObject {
     
     public HashMap<String, MetaObject> getALL();
     
+    public List<MetaObject> getTypeReferences();
+    
 }
