@@ -11,7 +11,6 @@ package c1c.meta.generated;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
@@ -28,11 +27,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element ref="{}TypeDescription"/>
- *       &lt;/sequence>
  *       &lt;attribute name="Description" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
- *       &lt;attribute name="FullName" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
+ *       &lt;attribute name="FullName" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *       &lt;attribute name="Name" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
  *       &lt;attribute name="Synonym" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *     &lt;/restriction>
@@ -43,20 +39,15 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "typeDescription"
-})
-@XmlRootElement(name = "Property")
-public class Property {
+@XmlType(name = "")
+@XmlRootElement(name = "Value")
+public class Value {
 
-    @XmlElement(name = "TypeDescription", required = true)
-    protected TypeDescription typeDescription;
     @XmlAttribute(name = "Description", required = true)
     @XmlSchemaType(name = "anySimpleType")
     protected String description;
     @XmlAttribute(name = "FullName", required = true)
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlSchemaType(name = "NCName")
+    @XmlSchemaType(name = "anySimpleType")
     protected String fullName;
     @XmlAttribute(name = "Name", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
@@ -65,30 +56,6 @@ public class Property {
     @XmlAttribute(name = "Synonym", required = true)
     @XmlSchemaType(name = "anySimpleType")
     protected String synonym;
-
-    /**
-     * Gets the value of the typeDescription property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TypeDescription }
-     *     
-     */
-    public TypeDescription getTypeDescription() {
-        return typeDescription;
-    }
-
-    /**
-     * Sets the value of the typeDescription property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TypeDescription }
-     *     
-     */
-    public void setTypeDescription(TypeDescription value) {
-        this.typeDescription = value;
-    }
 
     /**
      * Gets the value of the description property.

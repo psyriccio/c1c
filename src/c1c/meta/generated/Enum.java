@@ -8,6 +8,8 @@
 
 package c1c.meta.generated;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -29,10 +31,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}TypeDescription"/>
+ *         &lt;element ref="{}Value" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="Description" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *       &lt;attribute name="FullName" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
+ *       &lt;attribute name="ListDescription" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *       &lt;attribute name="Name" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
  *       &lt;attribute name="Synonym" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *     &lt;/restriction>
@@ -44,13 +47,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "typeDescription"
+    "value"
 })
-@XmlRootElement(name = "Property")
-public class Property {
+@XmlRootElement(name = "Enum")
+public class Enum {
 
-    @XmlElement(name = "TypeDescription", required = true)
-    protected TypeDescription typeDescription;
+    @XmlElement(name = "Value")
+    protected List<Value> value;
     @XmlAttribute(name = "Description", required = true)
     @XmlSchemaType(name = "anySimpleType")
     protected String description;
@@ -58,6 +61,9 @@ public class Property {
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "NCName")
     protected String fullName;
+    @XmlAttribute(name = "ListDescription", required = true)
+    @XmlSchemaType(name = "anySimpleType")
+    protected String listDescription;
     @XmlAttribute(name = "Name", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "NCName")
@@ -67,27 +73,32 @@ public class Property {
     protected String synonym;
 
     /**
-     * Gets the value of the typeDescription property.
+     * Gets the value of the value property.
      * 
-     * @return
-     *     possible object is
-     *     {@link TypeDescription }
-     *     
-     */
-    public TypeDescription getTypeDescription() {
-        return typeDescription;
-    }
-
-    /**
-     * Sets the value of the typeDescription property.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the value property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link TypeDescription }
-     *     
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getValue().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Value }
+     * 
+     * 
      */
-    public void setTypeDescription(TypeDescription value) {
-        this.typeDescription = value;
+    public List<Value> getValue() {
+        if (value == null) {
+            value = new ArrayList<Value>();
+        }
+        return this.value;
     }
 
     /**
@@ -136,6 +147,30 @@ public class Property {
      */
     public void setFullName(String value) {
         this.fullName = value;
+    }
+
+    /**
+     * Gets the value of the listDescription property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getListDescription() {
+        return listDescription;
+    }
+
+    /**
+     * Sets the value of the listDescription property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setListDescription(String value) {
+        this.listDescription = value;
     }
 
     /**
