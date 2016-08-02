@@ -191,7 +191,7 @@ public class MetaObjectImpl implements MetaObject {
         ALL.put(getRoot().getID(), hm);
         getChildrens().stream().forEach((MetaObject child) -> child.propagateParenthood());
         ALL.get(getRoot().getID()).forEach((name, obj) -> {
-            obj.get
+        
         });
     }
 

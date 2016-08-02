@@ -8,32 +8,24 @@
 
 package c1c.meta.generated.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import c1c.meta.generated.Property;
-import c1c.meta.generated.TabularSection;
+import c1c.meta.generated.Value;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "properties"
-})
-@XmlRootElement(name = "TabularSection")
-public class TabularSectionImpl
+@XmlType(name = "")
+@XmlRootElement(name = "Value")
+public class ValueImpl
     extends MetaObjectImpl
-    implements TabularSection
+    implements Value
 {
 
-    @XmlElement(name = "Property", required = true, type = PropertyImpl.class)
-    protected List<Property> properties;
     @XmlAttribute(name = "Description", required = true)
     @XmlSchemaType(name = "anySimpleType")
     protected String description;
@@ -47,13 +39,6 @@ public class TabularSectionImpl
     @XmlAttribute(name = "Synonym", required = true)
     @XmlSchemaType(name = "anySimpleType")
     protected String synonym;
-
-    public List<Property> getProperties() {
-        if (properties == null) {
-            properties = new ArrayList<Property>();
-        }
-        return this.properties;
-    }
 
     public String getDescription() {
         return description;

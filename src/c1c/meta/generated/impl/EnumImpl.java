@@ -19,27 +19,31 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import c1c.meta.generated.Property;
-import c1c.meta.generated.TabularSection;
+import c1c.meta.generated.Enum;
+import c1c.meta.generated.Value;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "properties"
+    "values"
 })
-@XmlRootElement(name = "TabularSection")
-public class TabularSectionImpl
+@XmlRootElement(name = "Enum")
+public class EnumImpl
     extends MetaObjectImpl
-    implements TabularSection
+    implements Enum
 {
 
-    @XmlElement(name = "Property", required = true, type = PropertyImpl.class)
-    protected List<Property> properties;
+    @XmlElement(name = "Value", type = ValueImpl.class)
+    protected List<Value> values;
     @XmlAttribute(name = "Description", required = true)
     @XmlSchemaType(name = "anySimpleType")
     protected String description;
     @XmlAttribute(name = "FullName", required = true)
-    @XmlSchemaType(name = "anySimpleType")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlSchemaType(name = "NCName")
     protected String fullName;
+    @XmlAttribute(name = "ListDescription", required = true)
+    @XmlSchemaType(name = "anySimpleType")
+    protected String listDescription;
     @XmlAttribute(name = "Name", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "NCName")
@@ -48,11 +52,11 @@ public class TabularSectionImpl
     @XmlSchemaType(name = "anySimpleType")
     protected String synonym;
 
-    public List<Property> getProperties() {
-        if (properties == null) {
-            properties = new ArrayList<Property>();
+    public List<Value> getValues() {
+        if (values == null) {
+            values = new ArrayList<Value>();
         }
-        return this.properties;
+        return this.values;
     }
 
     public String getDescription() {
@@ -69,6 +73,14 @@ public class TabularSectionImpl
 
     public void setFullName(String value) {
         this.fullName = value;
+    }
+
+    public String getListDescription() {
+        return listDescription;
+    }
+
+    public void setListDescription(String value) {
+        this.listDescription = value;
     }
 
     public String getName() {

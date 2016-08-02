@@ -1,20 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
-           xmlns:c1ex="http://github.com/psyriccio/c1ExchangeGen/c1c"
-           jaxb:extensionBindingPrefixes="xjc"
-           elementFormDefault="unqualified"
-           jaxb:version="2.0">
-           <xs:annotation>
-               <xs:appinfo>
-                   <jaxb:globalBindings generateValueClass="false">
-                       <xjc:superClass name="c1c.meta.generated.impl.MetaObjectImpl"/>
-                       <xjc:superInterface name="c1c.meta.generated.MetaObject"/>
-                       <xjc:simple />
-                   </jaxb:globalBindings>
-               </xs:appinfo>
-           </xs:annotation>
   <xs:element name="Conf">
     <xs:complexType>
       <xs:sequence>
