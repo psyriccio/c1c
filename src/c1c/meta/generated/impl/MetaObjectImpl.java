@@ -1,5 +1,6 @@
 package c1c.meta.generated.impl;
 
+import c1c.meta.C1;
 import c1c.meta.generated.Catalog;
 import c1c.meta.generated.Conf;
 import c1c.meta.generated.Document;
@@ -208,6 +209,17 @@ public class MetaObjectImpl implements MetaObject {
         hm.put(getID(), this);
         ALL.put(getRoot().getID(), hm);
         getChildrens().stream().forEach((MetaObject child) -> {
+            if(child instanceof Type) {
+                Type tp = (Type) child;
+                MetaObject typeRef = C1.findObjFullName(getRoot().asConf(), tp.getFullName()).orElse(getEMPTY());
+                if(typeRef != getEMPTY()) {
+                    MetaObject current = child;
+                    while(current != getEMPTY()) {
+                        current.getTypeReferences().add(typeRef);
+                        current = current.getParent();
+                    }
+                }
+            }
             if(prcProgressConsumer != null) {
                 double cntr = counter;
                 double cnt = count;
