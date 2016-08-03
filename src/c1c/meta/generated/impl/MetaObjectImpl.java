@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -29,12 +30,12 @@ public class MetaObjectImpl implements MetaObject {
     public static final HashMap<String, HashMap<String, MetaObject>> ALL;
     public static final HashMap<String, MetaObject> ROOT;
 
-    public static void registerConfiguration(Conf conf) {
+    public static void registerConfiguration(Conf conf, Consumer<Integer> prcProgressConsumer) {
         HashMap<String, MetaObject> all = ALL.getOrDefault(conf.getID(), new HashMap<>());
         all.put(conf.getID(), conf);
         ALL.put(conf.getID(), all);
         ROOT.put(conf.getID(), conf);
-        conf.propagateParenthood();
+        conf.propagateParenthood(prcProgressConsumer);
     }
 
     public static void unregisterConfiguration(Conf conf) {
@@ -199,13 +200,26 @@ public class MetaObjectImpl implements MetaObject {
 
     @Override
     public void propagateParenthood() {
+        propagateParenthood(null);
+    }
+
+    public void propagateParenthoodInternal(Consumer<Integer> prcProgressConsumer, int count, int counter) {
         HashMap<String, MetaObject> hm = ALL.getOrDefault(getRoot().getID(), new HashMap<>());
         hm.put(getID(), this);
         ALL.put(getRoot().getID(), hm);
-        getChildrens().stream().forEach((MetaObject child) -> child.propagateParenthood());
-        ALL.get(getRoot().getID()).forEach((name, obj) -> {
-
+        getChildrens().stream().forEach((MetaObject child) -> {
+            if(prcProgressConsumer != null) {
+                double cntr = counter;
+                double cnt = count;
+                prcProgressConsumer.accept((int) Math.round((cntr/cnt)*100));
+            }
+            child.propagateParenthoodInternal(prcProgressConsumer, count, counter + 1);
         });
+    }
+
+    @Override
+    public void propagateParenthood(Consumer<Integer> prcProgressConsumer) {
+        propagateParenthoodInternal(prcProgressConsumer, ALL.size(), 0);
     }
 
     @Override

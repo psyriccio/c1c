@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import org.reflections.ReflectionUtils;
 
@@ -226,6 +227,16 @@ public class MetaRef implements MetaObject {
         destination.propagateParenthood();
     }
 
+    @Override
+    public void propagateParenthoodInternal(Consumer<Integer> percentageProgressConsumer, int count, int counter) {
+        destination.propagateParenthoodInternal(percentageProgressConsumer, count, counter);
+    }
+
+    @Override
+    public void propagateParenthood(Consumer<Integer> percentageProgressConsumer) {
+        destination.propagateParenthood(percentageProgressConsumer);
+    }
+    
     @Override
     public MetaObject getRoot() {
         return (MetaObject) refPrc(destination.getRoot());

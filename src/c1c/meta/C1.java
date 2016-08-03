@@ -110,7 +110,7 @@ public class C1 {
         Optional<Conf> copt = mopt.get().asConfOpt();
         Conf conf = copt.get();
         if (conf != null) {
-            registerConfiguration(conf);
+            registerConfiguration(conf, prcConsumer);
         }
         return Optional.ofNullable(conf);
     }
@@ -119,9 +119,12 @@ public class C1 {
         return loadConfiguration(file, null);
     }
     
+    public static void registerConfiguration(Conf conf, Consumer<Integer> prcProgressConsumer) {
+        c1c.meta.generated.impl.MetaObjectImpl.registerConfiguration(conf, null);
+    }
     
     public static void registerConfiguration(Conf conf) {
-        c1c.meta.generated.impl.MetaObjectImpl.registerConfiguration(conf);
+        c1c.meta.generated.impl.MetaObjectImpl.registerConfiguration(conf, null);
     }
 
     public static void registerConfiguration(Optional<Conf> conf) {

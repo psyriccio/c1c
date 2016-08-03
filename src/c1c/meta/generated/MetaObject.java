@@ -8,6 +8,7 @@ package c1c.meta.generated;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 // Referenced classes of package c1c.meta:
 //            MetaObjectClass
@@ -45,7 +46,9 @@ public interface MetaObject {
     public MetaObject getRoot();
     
     public void propagateParenthood();
-
+    public void propagateParenthood(Consumer<Integer> percentageProgressConsumer);
+    public void propagateParenthoodInternal(Consumer<Integer> percentageProgressConsumer, int count, int counter);
+    
     @Override
     public String toString();
  
