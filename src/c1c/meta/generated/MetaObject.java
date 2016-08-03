@@ -25,6 +25,8 @@ public interface MetaObject {
     public Optional<Type> asTypeOpt();
     
     public Conf asConf();
+    public Enum asEnum();
+    public Value asValue();
     public Catalog asCatalog();
     public Document asDocument();
     public Property asProperty();

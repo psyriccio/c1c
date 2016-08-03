@@ -10,10 +10,12 @@ import c1c.meta.generated.MetaObject;
 import c1c.meta.generated.Catalog;
 import c1c.meta.generated.Conf;
 import c1c.meta.generated.Document;
+import c1c.meta.generated.Enum;
 import c1c.meta.generated.Property;
 import c1c.meta.generated.TabularSection;
 import c1c.meta.generated.Type;
 import c1c.meta.generated.TypeDescription;
+import c1c.meta.generated.Value;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -184,6 +186,16 @@ public class MetaRef implements MetaObject {
         return (Type) refPrc(destination.asType());
     }
 
+    @Override
+    public Enum asEnum() {
+        return (Enum) refPrc(destination.asEnum());
+    }
+
+    @Override
+    public Value asValue() {
+        return (Value) refPrc(destination.asValue());
+    }
+    
     @Override
     public MetaObjectClass getObjClass() {
         return (MetaObjectClass) refPrc(destination.getObjClass());

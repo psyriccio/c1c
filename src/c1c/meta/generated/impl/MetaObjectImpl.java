@@ -3,12 +3,14 @@ package c1c.meta.generated.impl;
 import c1c.meta.generated.Catalog;
 import c1c.meta.generated.Conf;
 import c1c.meta.generated.Document;
+import c1c.meta.generated.Enum;
 import c1c.meta.generated.MetaObject;
 import c1c.meta.generated.MetaObjectClass;
 import c1c.meta.generated.Property;
 import c1c.meta.generated.TabularSection;
 import c1c.meta.generated.Type;
 import c1c.meta.generated.TypeDescription;
+import c1c.meta.generated.Value;
 import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class MetaObjectImpl implements MetaObject {
     public static final MetaObject EMPTY;
     public static final HashMap<String, HashMap<String, MetaObject>> ALL;
     public static final HashMap<String, MetaObject> ROOT;
-    
+
     public static void registerConfiguration(Conf conf) {
         HashMap<String, MetaObject> all = ALL.getOrDefault(conf.getID(), new HashMap<>());
         all.put(conf.getID(), conf);
@@ -34,7 +36,7 @@ public class MetaObjectImpl implements MetaObject {
         ROOT.put(conf.getID(), conf);
         conf.propagateParenthood();
     }
-    
+
     public static void unregisterConfiguration(Conf conf) {
         Optional.ofNullable(
                 ALL.get(
@@ -45,7 +47,7 @@ public class MetaObjectImpl implements MetaObject {
         );
         ROOT.remove(conf.getID());
     }
-    
+
     static {
         EMPTY = new MetaObjectImpl(UUID.fromString("00000000-0000-0000-0000-000000000000"));
         ALL = new HashMap<>();
@@ -56,7 +58,7 @@ public class MetaObjectImpl implements MetaObject {
     private String rootID = "";
     private MetaObject parent = EMPTY;
     private final List<MetaObject> typeReferences;
-    
+
     public MetaObjectImpl() {
         this.id = UUID.randomUUID();
         this.typeReferences = new ArrayList<>();
@@ -124,6 +126,14 @@ public class MetaObjectImpl implements MetaObject {
         return (Conf) this;
     }
 
+    public Enum asEnum() {
+        return (Enum) this;
+    }
+
+    public Value asValue() {
+        return (Value) this;
+    }
+
     @Override
     public Catalog asCatalog() {
         return (Catalog) this;
@@ -162,14 +172,15 @@ public class MetaObjectImpl implements MetaObject {
     @Override
     public List<MetaObject> getChildrens() {
         return (this.getObjClass() == MetaObjectClass.Conf ? Lists.newArrayList(this.asConf().getCatalogs(), this.asConf().getDocuments())
-                : this.getObjClass() == MetaObjectClass.Catalog ? Lists.newArrayList(this.asCatalog().getProperties(), this.asCatalog().getTabularSections())
-                        : this.getObjClass() == MetaObjectClass.Document ? Lists.newArrayList(this.asDocument().getProperties(), this.asDocument().getTabularSections())
-                                : this.getObjClass() == MetaObjectClass.TabularSection ? Lists.newArrayList(this.asTabularSection().getProperties())
-                                        : this.getObjClass() == MetaObjectClass.Property ? Lists.newArrayList(Lists.newArrayList(this.asProperty().getTypeDescription()))
-                                                : this.getObjClass() == MetaObjectClass.TypeDescription ? Lists.newArrayList(this.asTypeDescription().getTypes())
-                                                        : this.getObjClass() == MetaObjectClass.Type ? Lists.newArrayList(new ArrayList<MetaObject>())
-                                                                : Lists.newArrayList(new ArrayList<MetaObject>()))
-                .stream().flatMap((lst) -> lst instanceof List ? ((List<MetaObject>) lst).stream() : lst instanceof MetaObject ? Stream.of((MetaObject)lst) : null )  
+                : this.getObjClass() == MetaObjectClass.Enum ? Lists.newArrayList(this.asEnum().getValues())
+                        : this.getObjClass() == MetaObjectClass.Catalog ? Lists.newArrayList(this.asCatalog().getProperties(), this.asCatalog().getTabularSections())
+                                : this.getObjClass() == MetaObjectClass.Document ? Lists.newArrayList(this.asDocument().getProperties(), this.asDocument().getTabularSections())
+                                        : this.getObjClass() == MetaObjectClass.TabularSection ? Lists.newArrayList(this.asTabularSection().getProperties())
+                                                : this.getObjClass() == MetaObjectClass.Property ? Lists.newArrayList(Lists.newArrayList(this.asProperty().getTypeDescription()))
+                                                        : this.getObjClass() == MetaObjectClass.TypeDescription ? Lists.newArrayList(this.asTypeDescription().getTypes())
+                                                                : this.getObjClass() == MetaObjectClass.Type ? Lists.newArrayList(new ArrayList<MetaObject>())
+                                                                        : Lists.newArrayList(new ArrayList<MetaObject>()))
+                .stream().flatMap((lst) -> lst instanceof List ? ((List<MetaObject>) lst).stream() : lst instanceof MetaObject ? Stream.of((MetaObject) lst) : null)
                 .peek((MetaObject obj) -> obj.setParent(this))
                 .collect(Collectors.toList());
     }
@@ -191,21 +202,21 @@ public class MetaObjectImpl implements MetaObject {
         ALL.put(getRoot().getID(), hm);
         getChildrens().stream().forEach((MetaObject child) -> child.propagateParenthood());
         ALL.get(getRoot().getID()).forEach((name, obj) -> {
-        
+
         });
     }
 
     @Override
     public MetaObject getRoot() {
         MetaObject _root = this;
-        if(rootID.isEmpty()) {
+        if (rootID.isEmpty()) {
             MetaObject cand = getParent();
-            while(cand != EMPTY) {
+            while (cand != EMPTY) {
                 _root = cand;
                 cand = cand.getParent();
             }
             rootID = _root.getID();
-       } else {
+        } else {
             _root = ROOT.get(rootID);
         }
         return _root;
@@ -214,21 +225,22 @@ public class MetaObjectImpl implements MetaObject {
     @Override
     public String toString() {
         return this.getObjClass() == MetaObjectClass.Conf ? this.asConf().getName() + " (Конфигурация)"
-                : this.getObjClass() == MetaObjectClass.Catalog ? this.asCatalog().getName() + " (Справочник)"
-                : this.getObjClass() == MetaObjectClass.Document ? this.asDocument().getName() + " (Документ)"
-                : this.getObjClass() == MetaObjectClass.Property ? this.asProperty().getName() + " (Свойство)"
-                : this.getObjClass() == MetaObjectClass.TabularSection ? this.asTabularSection().getName() + " (Табличная часть)"
-                : this.getObjClass() == MetaObjectClass.TypeDescription ? this.asTypeDescription().getID() + " (Описание типов)"
-                : this.getObjClass() == MetaObjectClass.Type ? this.asType().getName() + " (Тип)"
-                : this.getObjClass() == MetaObjectClass.VirtualDirectory ? "["+ ((MetaVertualDirectory) this).getName() + "]"
-                : this.getID() + " (?)";
+                : this.getObjClass() == MetaObjectClass.Enum ? this.asEnum().getName() + " (Перечисление)"
+                        : this.getObjClass() == MetaObjectClass.EnumValue ? this.asValue().getName() + " (Значение)"
+                                : this.getObjClass() == MetaObjectClass.Catalog ? this.asCatalog().getName() + " (Справочник)"
+                                        : this.getObjClass() == MetaObjectClass.Document ? this.asDocument().getName() + " (Документ)"
+                                                : this.getObjClass() == MetaObjectClass.Property ? this.asProperty().getName() + " (Свойство)"
+                                                        : this.getObjClass() == MetaObjectClass.TabularSection ? this.asTabularSection().getName() + " (Табличная часть)"
+                                                                : this.getObjClass() == MetaObjectClass.TypeDescription ? this.asTypeDescription().getID() + " (Описание типов)"
+                                                                        : this.getObjClass() == MetaObjectClass.Type ? this.asType().getName() + " (Тип)"
+                                                                                : this.getObjClass() == MetaObjectClass.VirtualDirectory ? "[" + ((MetaVertualDirectory) this).getName() + "]"
+                                                                                        : this.getID() + " (?)";
     }
 
     @Override
     public boolean isRef() {
         return (this.getClass().equals(MetaRef.class));
     }
-
 
     @Override
     public String getName() {
@@ -244,7 +256,7 @@ public class MetaObjectImpl implements MetaObject {
     public String getFullName() {
         return "";
     }
-    
+
     @Override
     public String getDescription() {
         return "<ABSTRACT>";
@@ -254,6 +266,5 @@ public class MetaObjectImpl implements MetaObject {
     public List<MetaObject> getTypeReferences() {
         return this.typeReferences;
     }
-    
-    
+
 }
