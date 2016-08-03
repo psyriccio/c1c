@@ -64,11 +64,38 @@ public class C1 {
     }
 
     public static Optional<MetaObject> unmarshall(File file) {
+        return unmarshall(file, (prc) -> {
+            System.out.println(Integer.toString(prc) + "%");
+        });
+    }
+
+    public static Optional<MetaObject> unmarshall(File file, Consumer<Integer> progressPercentageConsumer) {
         try {
             if (unmarshaller == null) {
                 inintJAXBContext();
             }
-            return Optional.ofNullable((MetaObject) unmarshaller.unmarshal(file));
+            unmarshaller.setListener(new Unmarshaller.Listener() {
+
+                private int objCount = 0;
+                private int objCounter = 0;
+                private int percent = 0;
+                
+                @Override
+                public void beforeUnmarshal(Object target, Object parent) {
+                    if(parent instanceof Conf) {
+                        Conf conf = (Conf) parent;
+                        if(objCount == 0) objCount = conf.getCatalogsCount().intValue() + conf.getEnumsCount().intValue() + conf.getDocumentsCount().intValue();
+                        percent = Math.round((objCounter / objCount) * 100);
+                        objCounter++;
+                    }
+                    if(progressPercentageConsumer != null) progressPercentageConsumer.accept(percent);
+                    super.beforeUnmarshal(target, parent); 
+                }
+                
+            });
+            Optional<MetaObject> res = Optional.ofNullable((MetaObject) unmarshaller.unmarshal(file));
+            unmarshaller.setListener(null);
+            return res;
         } catch (JAXBException ex) {
             if (exceptionsConsumer != null) {
                 exceptionsConsumer.accept(ex);
@@ -76,7 +103,8 @@ public class C1 {
             return Optional.empty();
         }
     }
-
+    
+    
     public static Optional<Conf> loadConfiguration(File file) throws JAXBException {
         Optional<MetaObject> mopt = unmarshall(file);
         Optional<Conf> copt = mopt.get().asConfOpt();

@@ -22,6 +22,9 @@
         <xs:element maxOccurs="unbounded" ref="Catalog"/>
         <xs:element maxOccurs="unbounded" ref="Document"/>
       </xs:sequence>
+      <xs:attribute name="CatalogsCount" use="required" type="xs:decimal"/>
+      <xs:attribute name="DocumentsCount" use="required" type="xs:decimal"/>
+      <xs:attribute name="EnumsCount" use="required" type="xs:decimal"/>
       <xs:attribute name="Name" use="required"/>
     </xs:complexType>
   </xs:element>
