@@ -105,8 +105,8 @@ public class C1 {
     }
     
     
-    public static Optional<Conf> loadConfiguration(File file) throws JAXBException {
-        Optional<MetaObject> mopt = unmarshall(file);
+    public static Optional<Conf> loadConfiguration(File file, Consumer<Integer> prcConsumer) throws JAXBException {
+        Optional<MetaObject> mopt = unmarshall(file, prcConsumer);
         Optional<Conf> copt = mopt.get().asConfOpt();
         Conf conf = copt.get();
         if (conf != null) {
@@ -115,6 +115,11 @@ public class C1 {
         return Optional.ofNullable(conf);
     }
 
+    public static Optional<Conf> loadConfiguration(File file) throws JAXBException {
+        return loadConfiguration(file, null);
+    }
+    
+    
     public static void registerConfiguration(Conf conf) {
         c1c.meta.generated.impl.MetaObjectImpl.registerConfiguration(conf);
     }
