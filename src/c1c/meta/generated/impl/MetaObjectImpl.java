@@ -112,13 +112,15 @@ public class MetaObjectImpl implements MetaObject {
     @Override
     public MetaObjectClass getObjClass() {
         return (this instanceof Conf) ? MetaObjectClass.Conf
-                : (this instanceof Property) ? MetaObjectClass.Property
-                        : (this instanceof Catalog) ? MetaObjectClass.Catalog
-                                : (this instanceof Document) ? MetaObjectClass.Document
-                                        : (this instanceof Type) ? MetaObjectClass.Type
-                                                : (this instanceof TypeDescription) ? MetaObjectClass.TypeDescription
-                                                        : (this instanceof TabularSection) ? MetaObjectClass.TabularSection
-                                                                : (this instanceof Catalog) ? MetaObjectClass.Catalog : null;
+                : (this instanceof Enum) ? MetaObjectClass.Enum
+                        : (this instanceof Value) ? MetaObjectClass.EnumValue
+                                : (this instanceof Property) ? MetaObjectClass.Property
+                                        : (this instanceof Catalog) ? MetaObjectClass.Catalog
+                                                : (this instanceof Document) ? MetaObjectClass.Document
+                                                        : (this instanceof Type) ? MetaObjectClass.Type
+                                                                : (this instanceof TypeDescription) ? MetaObjectClass.TypeDescription
+                                                                        : (this instanceof TabularSection) ? MetaObjectClass.TabularSection
+                                                                                : (this instanceof Catalog) ? MetaObjectClass.Catalog : null;
     }
 
     @Override
