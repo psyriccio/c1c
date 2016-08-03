@@ -11,6 +11,7 @@ import c1c.meta.generated.Catalog;
 import c1c.meta.generated.Conf;
 import c1c.meta.generated.Document;
 import c1c.meta.generated.Enum;
+import c1c.meta.generated.MetaComparationResult;
 import c1c.meta.generated.Property;
 import c1c.meta.generated.TabularSection;
 import c1c.meta.generated.Type;
@@ -29,6 +30,51 @@ import org.reflections.ReflectionUtils;
  * @author psyriccio
  */
 public class MetaRef implements MetaObject {
+
+    @Override
+    public MetaComparationResult compareAsConfTo(Conf out) {
+        return destination.compareAsConfTo(out);
+    }
+
+    @Override
+    public MetaComparationResult compareAsEnumTo(Enum out) {
+        return destination.compareAsEnumTo(out);
+    }
+
+    @Override
+    public MetaComparationResult compareAsValueTo(Value out) {
+        return destination.compareAsValueTo(out);
+    }
+
+    @Override
+    public MetaComparationResult compareAsCatalogTo(Catalog out) {
+        return destination.compareAsCatalogTo(out);
+    }
+
+    @Override
+    public MetaComparationResult compareAsDocumentTo(Document out) {
+        return destination.compareAsDocumentTo(out);
+    }
+
+    @Override
+    public MetaComparationResult compareAsPropertyTo(Property out) {
+        return destination.compareAsPropertyTo(out);
+    }
+
+    @Override
+    public MetaComparationResult compareAsTabularSectionTo(TabularSection out) {
+        return destination.compareAsTabularSectionTo(out);
+    }
+
+    @Override
+    public MetaComparationResult compareAsTypeDescriptionTo(TypeDescription out) {
+        return destination.compareAsTypeDescriptionTo(out);
+    }
+
+    @Override
+    public MetaComparationResult compareAsTypeTo(Type out) {
+        return destination.compareAsTypeTo(out);
+    }
 
     public class RefProcessingInfo {
 
@@ -265,6 +311,11 @@ public class MetaRef implements MetaObject {
     @Override
     public List<MetaObject> getTypeReferences() {
         return (List<MetaObject>) refPrc(destination.getTypeReferences());
+    }
+
+    @Override
+    public MetaComparationResult compareTo(MetaObject out) {
+        return destination.compareTo(out);
     }
     
     @Override

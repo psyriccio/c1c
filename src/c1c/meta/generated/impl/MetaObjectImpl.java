@@ -5,6 +5,7 @@ import c1c.meta.generated.Catalog;
 import c1c.meta.generated.Conf;
 import c1c.meta.generated.Document;
 import c1c.meta.generated.Enum;
+import c1c.meta.generated.MetaComparationResult;
 import c1c.meta.generated.MetaObject;
 import c1c.meta.generated.MetaObjectClass;
 import c1c.meta.generated.Property;
@@ -209,21 +210,21 @@ public class MetaObjectImpl implements MetaObject {
         hm.put(getID(), this);
         ALL.put(getRoot().getID(), hm);
         getChildrens().stream().forEach((MetaObject child) -> {
-            if(child instanceof Type) {
+            if (child instanceof Type) {
                 Type tp = (Type) child;
                 MetaObject typeRef = C1.findObjFullName(getRoot().asConf(), tp.getFullName()).orElse(getEMPTY());
-                if(typeRef != getEMPTY()) {
+                if (typeRef != getEMPTY()) {
                     MetaObject current = child;
-                    while(current != getEMPTY()) {
+                    while (current != getEMPTY()) {
                         current.getTypeReferences().add(typeRef);
                         current = current.getParent();
                     }
                 }
             }
-            if(prcProgressConsumer != null) {
+            if (prcProgressConsumer != null) {
                 double cntr = counter;
                 double cnt = count;
-                prcProgressConsumer.accept((int) Math.round((cntr/cnt)*100));
+                prcProgressConsumer.accept((int) Math.round((cntr / cnt) * 100));
             }
             child.propagateParenthoodInternal(prcProgressConsumer, count, counter + 1);
         });
@@ -293,6 +294,94 @@ public class MetaObjectImpl implements MetaObject {
     @Override
     public List<MetaObject> getTypeReferences() {
         return this.typeReferences;
+    }
+
+    @Override
+    public MetaComparationResult compareTo(MetaObject out) {
+        if (this.getObjClass() != out.getObjClass()) {
+            return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_CLASS);
+        }
+
+        MetaComparationResult result = null;
+        
+        switch (this.getObjClass()) {
+            case Conf:
+                result = this.compareAsConfTo(out.asConf());
+                break;
+            case Enum:
+                result = this.compareAsEnumTo(out.asEnum());
+                break;
+            case EnumValue:
+                result = this.compareAsValueTo(out.asValue());
+                break;
+            case Catalog:
+                result = this.compareAsCatalogTo(out.asCatalog());
+                break;
+            case Document:
+                result = this.compareAsDocumentTo(out.asDocument());
+                break;
+            case Property:
+                result = this.compareAsPropertyTo(out.asProperty());
+                break;
+            case TabularSection:
+                result = this.compareAsTabularSectionTo(out.asTabularSection());
+                break;
+            case TypeDescription:
+                result = this.compareAsTypeDescriptionTo(out.asTypeDescription());
+                break;
+            case Type:
+                result = this.compareAsTypeTo(out.asType());
+                break;
+            default:
+                result = null;
+        }
+
+        return result;
+    }
+
+    @Override
+    public MetaComparationResult compareAsConfTo(Conf out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public MetaComparationResult compareAsEnumTo(Enum out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public MetaComparationResult compareAsValueTo(Value out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public MetaComparationResult compareAsCatalogTo(Catalog out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public MetaComparationResult compareAsDocumentTo(Document out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public MetaComparationResult compareAsPropertyTo(Property out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public MetaComparationResult compareAsTabularSectionTo(TabularSection out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public MetaComparationResult compareAsTypeDescriptionTo(TypeDescription out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public MetaComparationResult compareAsTypeTo(Type out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -61,5 +61,16 @@ public interface MetaObject {
     public HashMap<String, MetaObject> getALL();
     
     public List<MetaObject> getTypeReferences();
+
+    public MetaComparationResult compareTo(MetaObject out);
+    public MetaComparationResult compareAsConfTo(Conf out);
+    public MetaComparationResult compareAsEnumTo(Enum out);
+    public MetaComparationResult compareAsValueTo(Value out);
+    public MetaComparationResult compareAsCatalogTo(Catalog out);
+    public MetaComparationResult compareAsDocumentTo(Document out);
+    public MetaComparationResult compareAsPropertyTo(Property out);
+    public MetaComparationResult compareAsTabularSectionTo(TabularSection out);
+    public MetaComparationResult compareAsTypeDescriptionTo(TypeDescription out);
+    public MetaComparationResult compareAsTypeTo(Type out);
     
 }
