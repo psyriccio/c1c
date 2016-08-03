@@ -64,9 +64,7 @@ public class C1 {
     }
 
     public static Optional<MetaObject> unmarshall(File file) {
-        return unmarshall(file, (prc) -> {
-            System.out.println(Integer.toString(prc) + "%");
-        });
+        return unmarshall(file, null);
     }
 
     public static Optional<MetaObject> unmarshall(File file, Consumer<Integer> progressPercentageConsumer) {
@@ -85,7 +83,9 @@ public class C1 {
                     if(parent instanceof Conf) {
                         Conf conf = (Conf) parent;
                         if(objCount == 0) objCount = conf.getCatalogsCount().intValue() + conf.getEnumsCount().intValue() + conf.getDocumentsCount().intValue();
-                        percent = Math.round((objCounter / objCount) * 100);
+                        double ocr = objCounter;
+                        double oc = objCount;
+                        percent = (int) Math.round((ocr / oc) * 100);
                         objCounter++;
                     }
                     if(progressPercentageConsumer != null) progressPercentageConsumer.accept(percent);
