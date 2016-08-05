@@ -390,7 +390,7 @@ public class MetaObjectImpl implements MetaObject {
         HashMap<String, Type> inTypes = new HashMap<>();
         HashMap<String, Type> outTypes = new HashMap<>();
         this.asTypeDescription().getTypes().forEach((tp) -> inTypes.put(tp.getName(), tp));
-        out.getTypes().forEach((tp) -> inTypes.put(tp.getName(), tp));
+        out.getTypes().forEach((tp) -> outTypes.put(tp.getName(), tp));
         
         if (inTypes.size() != outTypes.size()) {
             return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
