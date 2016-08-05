@@ -303,7 +303,7 @@ public class MetaObjectImpl implements MetaObject {
         }
 
         MetaComparationResult result = null;
-        
+
         switch (this.getObjClass()) {
             case Conf:
                 result = this.compareAsConfTo(out.asConf());
@@ -341,47 +341,83 @@ public class MetaObjectImpl implements MetaObject {
 
     @Override
     public MetaComparationResult compareAsConfTo(Conf out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
     }
 
     @Override
     public MetaComparationResult compareAsEnumTo(Enum out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
     }
 
     @Override
     public MetaComparationResult compareAsValueTo(Value out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
     }
 
     @Override
     public MetaComparationResult compareAsCatalogTo(Catalog out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!this.asCatalog().getCodeLength().equals(out.getCodeLength())
+                || !this.asCatalog().getCodeType().equals(out.getCodeType())
+                || !this.asCatalog().getLevelCount().equals(out.getLevelCount())) {
+            return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
+        } else {
+            return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
+        }
     }
 
     @Override
     public MetaComparationResult compareAsDocumentTo(Document out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!this.asDocument().getCodeLength().equals(out.getCodeLength())
+                || !this.asDocument().getCodeType().equals(out.getCodeType())) {
+            return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
+        } else {
+            return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
+        }
     }
 
     @Override
     public MetaComparationResult compareAsPropertyTo(Property out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
     }
 
     @Override
     public MetaComparationResult compareAsTabularSectionTo(TabularSection out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
     }
 
     @Override
     public MetaComparationResult compareAsTypeDescriptionTo(TypeDescription out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HashMap<String, Type> inTypes = new HashMap<>();
+        HashMap<String, Type> outTypes = new HashMap<>();
+        this.asTypeDescription().getTypes().forEach((tp) -> inTypes.put(tp.getName(), tp));
+        out.getTypes().forEach((tp) -> inTypes.put(tp.getName(), tp));
+        
+        if (inTypes.size() != outTypes.size()) {
+            return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
+        }
+        
+        if(!inTypes.keySet().containsAll(outTypes.keySet())
+                || !outTypes.keySet().containsAll(inTypes.keySet())) {
+            return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
+        }
+        
+        return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
+        
     }
 
     @Override
     public MetaComparationResult compareAsTypeTo(Type out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        if(!this.asType().getName().equals(out.getName())) {
+            return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
+        }
+        
+        if(this.asType().getTypeReferences().size() != out.getTypeReferences().size()) {
+            return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
+        }
+        
+        return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
+        
     }
 
 }

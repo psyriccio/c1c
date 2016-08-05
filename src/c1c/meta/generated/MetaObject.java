@@ -8,6 +8,7 @@ package c1c.meta.generated;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 // Referenced classes of package c1c.meta:

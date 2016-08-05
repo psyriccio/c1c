@@ -5,6 +5,10 @@
  */
 package c1c.meta.generated;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  *
  * @author psyriccio
@@ -14,17 +18,30 @@ public class MetaComparationResult {
     public enum ComparationState {
         EQU, DIFF_CLASS, DIFF_MAIN, DIFF_SUB
     }
-    
+
     private final MetaObject in;
     private final MetaObject out;
     private final boolean equals;
     private final ComparationState state;
+    private final HashMap<String, MetaComparationResult> subResults;
 
     public MetaComparationResult(MetaObject in, MetaObject out, ComparationState state) {
         this.in = in;
         this.out = out;
         this.equals = (state == ComparationState.EQU);
         this.state = state;
+        this.subResults = new HashMap<>();
+    }
+
+    public MetaComparationResult(MetaObject in, MetaObject out, ComparationState state, HashMap<String, MetaComparationResult> subResults) {
+        this.in = in;
+        this.out = out;
+        this.state = subResults.values().stream()
+                .map((itm) -> itm.getState())
+                .allMatch((st) -> st == ComparationState.EQU) ? state : ComparationState.DIFF_SUB;
+        this.equals = (state == ComparationState.EQU);
+        this.subResults = new HashMap<>();
+        this.subResults.putAll(subResults);
     }
 
     public boolean isEquals() {
@@ -42,6 +59,5 @@ public class MetaComparationResult {
     public MetaObject getOut() {
         return out;
     }
-   
-    
+
 }
