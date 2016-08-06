@@ -73,6 +73,9 @@ public class Selector {
     }
 
     public Selector select(String expr) {
+        if(expr == null || expr.isEmpty()) {
+            return go("");
+        }
         String[] parts = expr.split("\\.", 2);
         if (parts.length == 0) {
             return go("");
