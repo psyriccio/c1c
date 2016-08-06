@@ -20,6 +20,7 @@ public class Selector {
 
     private MetaObject base;
     private final List<MetaObject> selection;
+    private final boolean virtDirCreation;
 
     private Selector go(String part) {
         if (part.isEmpty()) {
@@ -53,7 +54,11 @@ public class Selector {
         } else {
             base = base.getChildrens().stream()
                     .filter((ch) -> ch.getName().equals(part))
-                    .findFirst().orElse(MetaObjectImpl.EMPTY);
+                    .findFirst().orElse(
+                            virtDirCreation 
+                                    ? new MetaVertualDirectory(part, base.getFullName() + "." + part, base, null) 
+                                    : MetaObjectImpl.EMPTY
+                    );
             rebaseSelection();
         }
         return this;
@@ -67,8 +72,15 @@ public class Selector {
     public Selector(MetaObject base) {
         this.base = base;
         this.selection = new ArrayList<>();
+        this.virtDirCreation = false;
     }
 
+    public Selector(MetaObject base, boolean virtualDirCreationMode) {
+        this.base = base;
+        this.selection = new ArrayList<>();
+        this.virtDirCreation = virtualDirCreationMode;
+    }
+    
     public List<MetaObject> getSelection() {
         return selection;
     }

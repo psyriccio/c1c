@@ -443,5 +443,10 @@ public class MetaObjectImpl implements MetaObject {
     public Selector select(String expr) {
         return new Selector(this).select(expr);
     }
+
+    @Override
+    public Selector selectVD(String expr) {
+        return new Selector(this, true).select(expr);
+    }
     
 }

@@ -97,6 +97,11 @@ public class MetaRef implements MetaObject {
         return (Selector) refPrc(destination.select(expr));
     }
 
+    @Override
+    public Selector selectVD(String expr) {
+        return (Selector) refPrc(destination.selectVD(expr));
+    }
+
     public class RefProcessingInfo {
 
         private final MetaObject obj;
