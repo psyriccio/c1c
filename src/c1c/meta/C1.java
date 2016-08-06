@@ -27,8 +27,6 @@ public class C1 {
 
     private static Consumer<Exception> exceptionsConsumer;
     private static JAXBContext jaxbContext = null;
-    private static Marshaller marshaller = null;
-    private static Unmarshaller unmarshaller = null;
 
     private static void inintJAXBContext() throws JAXBException {
         if (jaxbContext == null) {
@@ -37,8 +35,6 @@ public class C1 {
                     c1c.meta.generated.MetaObject.class.getClassLoader(),
                     new HashMap());
         }
-        marshaller = jaxbContext.createMarshaller();
-        unmarshaller = jaxbContext.createUnmarshaller();
     }
 
     public static <T> Stream<T> streamWith(T obj) {
@@ -52,10 +48,7 @@ public class C1 {
 
     public static void marshall(MetaObject obj, File file) {
         try {
-            if (marshaller == null) {
-                inintJAXBContext();
-            }
-            marshaller.marshal(obj, file);
+            jaxbContext.createMarshaller().marshal(obj, file);
         } catch (JAXBException ex) {
             if (exceptionsConsumer != null) {
                 exceptionsConsumer.accept(ex);
@@ -64,34 +57,45 @@ public class C1 {
     }
 
     public static Optional<MetaObject> unmarshall(File file) {
-        return unmarshall(file, null);
+        try {
+            return Optional.ofNullable((MetaObject) jaxbContext.createUnmarshaller().unmarshal(file));
+        } catch (JAXBException ex) {
+            if (exceptionsConsumer != null) {
+                exceptionsConsumer.accept(ex);
+            }
+        }
+        
+        return Optional.ofNullable(null);
+        
     }
 
     public static Optional<MetaObject> unmarshall(File file, Consumer<Integer> progressPercentageConsumer) {
         try {
-            if (unmarshaller == null) {
-                inintJAXBContext();
-            }
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             unmarshaller.setListener(new Unmarshaller.Listener() {
 
                 private int objCount = 0;
                 private int objCounter = 0;
                 private int percent = 0;
-                
+
                 @Override
                 public void beforeUnmarshal(Object target, Object parent) {
-                    if(parent instanceof Conf) {
+                    if (parent instanceof Conf) {
                         Conf conf = (Conf) parent;
-                        if(objCount == 0) objCount = conf.getCatalogsCount().intValue() + conf.getEnumsCount().intValue() + conf.getDocumentsCount().intValue();
+                        if (objCount == 0) {
+                            objCount = conf.getCatalogsCount().intValue() + conf.getEnumsCount().intValue() + conf.getDocumentsCount().intValue();
+                        }
                         double ocr = objCounter;
                         double oc = objCount;
                         percent = (int) Math.round((ocr / oc) * 100);
                         objCounter++;
                     }
-                    if(progressPercentageConsumer != null) progressPercentageConsumer.accept(percent);
-                    super.beforeUnmarshal(target, parent); 
+                    if (progressPercentageConsumer != null) {
+                        progressPercentageConsumer.accept(percent);
+                    }
+                    super.beforeUnmarshal(target, parent);
                 }
-                
+
             });
             Optional<MetaObject> res = Optional.ofNullable((MetaObject) unmarshaller.unmarshal(file));
             unmarshaller.setListener(null);
@@ -103,8 +107,7 @@ public class C1 {
             return Optional.empty();
         }
     }
-    
-    
+
     public static Optional<Conf> loadConfiguration(File file, Consumer<Integer> prcConsumer) throws JAXBException {
         Optional<MetaObject> mopt = unmarshall(file, prcConsumer);
         Optional<Conf> copt = mopt.get().asConfOpt();
@@ -118,11 +121,11 @@ public class C1 {
     public static Optional<Conf> loadConfiguration(File file) throws JAXBException {
         return loadConfiguration(file, null);
     }
-    
+
     public static void registerConfiguration(Conf conf, Consumer<Integer> prcProgressConsumer) {
         c1c.meta.generated.impl.MetaObjectImpl.registerConfiguration(conf, null);
     }
-    
+
     public static void registerConfiguration(Conf conf) {
         c1c.meta.generated.impl.MetaObjectImpl.registerConfiguration(conf, null);
     }
