@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 /**
@@ -48,6 +47,7 @@ public class C1 {
 
     public static void marshall(MetaObject obj, File file) {
         try {
+            inintJAXBContext();
             jaxbContext.createMarshaller().marshal(obj, file);
         } catch (JAXBException ex) {
             if (exceptionsConsumer != null) {
@@ -58,6 +58,7 @@ public class C1 {
 
     public static Optional<MetaObject> unmarshall(File file) {
         try {
+            inintJAXBContext();
             return Optional.ofNullable((MetaObject) jaxbContext.createUnmarshaller().unmarshal(file));
         } catch (JAXBException ex) {
             if (exceptionsConsumer != null) {
@@ -71,6 +72,7 @@ public class C1 {
 
     public static Optional<MetaObject> unmarshall(File file, Consumer<Integer> progressPercentageConsumer) {
         try {
+            inintJAXBContext();
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             unmarshaller.setListener(new Unmarshaller.Listener() {
 
