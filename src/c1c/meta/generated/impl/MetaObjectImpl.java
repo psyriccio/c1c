@@ -1,6 +1,7 @@
 package c1c.meta.generated.impl;
 
 import c1c.meta.C1;
+import c1c.meta.Selector;
 import c1c.meta.generated.Catalog;
 import c1c.meta.generated.Conf;
 import c1c.meta.generated.Document;
@@ -438,4 +439,9 @@ public class MetaObjectImpl implements MetaObject {
         return this.marks.contains(mark);
     }
 
+    @Override
+    public Selector select(String expr) {
+        return new Selector(this).select(expr);
+    }
+    
 }

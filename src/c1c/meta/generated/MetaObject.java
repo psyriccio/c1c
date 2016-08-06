@@ -5,6 +5,7 @@
 
 package c1c.meta.generated;
 
+import c1c.meta.Selector;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -76,5 +77,7 @@ public interface MetaObject {
     public void mark(String mark);
     public void unmark(String mark);
     public boolean isMarkedBy(String mark);
+    
+    public Selector select(String expr);
     
 }

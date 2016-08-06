@@ -5,6 +5,7 @@
  */
 package c1c.meta.generated.impl;
 
+import c1c.meta.Selector;
 import c1c.meta.generated.MetaObjectClass;
 import c1c.meta.generated.MetaObject;
 import c1c.meta.generated.Catalog;
@@ -89,6 +90,11 @@ public class MetaRef implements MetaObject {
     @Override
     public boolean isMarkedBy(String mark) {
         return (boolean) refPrc(destination.isMarkedBy(mark));
+    }
+
+    @Override
+    public Selector select(String expr) {
+        return (Selector) refPrc(destination.select(expr));
     }
 
     public class RefProcessingInfo {
