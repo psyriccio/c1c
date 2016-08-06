@@ -6,6 +6,7 @@
 package c1c.meta;
 
 import c1c.meta.generated.MetaObject;
+import c1c.meta.generated.impl.MetaObjectImpl;
 import c1c.meta.generated.impl.MetaVertualDirectory;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class Selector {
         } else {
             base = base.getChildrens().stream()
                     .filter((ch) -> ch.getName().equals(part))
-                    .findFirst().get();
+                    .findFirst().orElse(MetaObjectImpl.EMPTY);
             rebaseSelection();
         }
         return this;
