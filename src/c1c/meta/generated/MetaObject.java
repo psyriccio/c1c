@@ -8,7 +8,6 @@ package c1c.meta.generated;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 // Referenced classes of package c1c.meta:
@@ -73,5 +72,9 @@ public interface MetaObject {
     public MetaComparationResult compareAsTabularSectionTo(TabularSection out);
     public MetaComparationResult compareAsTypeDescriptionTo(TypeDescription out);
     public MetaComparationResult compareAsTypeTo(Type out);
+    
+    public void mark(String mark);
+    public void unmark(String mark);
+    public boolean isMarkedBy(String mark);
     
 }

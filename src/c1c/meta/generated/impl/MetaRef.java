@@ -76,6 +76,21 @@ public class MetaRef implements MetaObject {
         return destination.compareAsTypeTo(out);
     }
 
+    @Override
+    public void mark(String mark) {
+        destination.mark(mark);
+    }
+
+    @Override
+    public void unmark(String mark) {
+        destination.unmark(mark);
+    }
+
+    @Override
+    public boolean isMarkedBy(String mark) {
+        return (boolean) refPrc(destination.isMarkedBy(mark));
+    }
+
     public class RefProcessingInfo {
 
         private final MetaObject obj;
@@ -108,7 +123,7 @@ public class MetaRef implements MetaObject {
         public void setResult(Object result) {
             this.result = result;
         }
-        
+
     }
 
     private final String id;
@@ -242,7 +257,7 @@ public class MetaRef implements MetaObject {
     public Value asValue() {
         return (Value) refPrc(destination.asValue());
     }
-    
+
     @Override
     public MetaObjectClass getObjClass() {
         return (MetaObjectClass) refPrc(destination.getObjClass());
@@ -282,7 +297,7 @@ public class MetaRef implements MetaObject {
     public void propagateParenthood(Consumer<Integer> percentageProgressConsumer) {
         destination.propagateParenthood(percentageProgressConsumer);
     }
-    
+
     @Override
     public MetaObject getRoot() {
         return (MetaObject) refPrc(destination.getRoot());
@@ -302,7 +317,7 @@ public class MetaRef implements MetaObject {
     public String getFullName() {
         return (String) refPrc(destination.getFullName());
     }
-    
+
     @Override
     public HashMap<String, MetaObject> getALL() {
         return destination.getALL();
@@ -317,7 +332,7 @@ public class MetaRef implements MetaObject {
     public MetaComparationResult compareTo(MetaObject out) {
         return destination.compareTo(out);
     }
-    
+
     @Override
     public boolean isRef() {
         return true;

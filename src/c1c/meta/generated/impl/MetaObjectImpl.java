@@ -61,15 +61,18 @@ public class MetaObjectImpl implements MetaObject {
     private String rootID = "";
     private MetaObject parent = EMPTY;
     private final List<MetaObject> typeReferences;
+    private final List<String> marks;
 
     public MetaObjectImpl() {
         this.id = UUID.randomUUID();
         this.typeReferences = new ArrayList<>();
+        this.marks = new ArrayList<>();
     }
 
     public MetaObjectImpl(UUID id) {
         this.id = id;
         this.typeReferences = new ArrayList<>();
+        this.marks = new ArrayList<>();
     }
 
     @Override
@@ -391,33 +394,48 @@ public class MetaObjectImpl implements MetaObject {
         HashMap<String, Type> outTypes = new HashMap<>();
         this.asTypeDescription().getTypes().forEach((tp) -> inTypes.put(tp.getName(), tp));
         out.getTypes().forEach((tp) -> outTypes.put(tp.getName(), tp));
-        
+
         if (inTypes.size() != outTypes.size()) {
             return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
         }
-        
-        if(!inTypes.keySet().containsAll(outTypes.keySet())
+
+        if (!inTypes.keySet().containsAll(outTypes.keySet())
                 || !outTypes.keySet().containsAll(inTypes.keySet())) {
             return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
         }
-        
+
         return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
-        
+
     }
 
     @Override
     public MetaComparationResult compareAsTypeTo(Type out) {
-        
-        if(!this.asType().getName().equals(out.getName())) {
+
+        if (!this.asType().getName().equals(out.getName())) {
             return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
         }
-        
-        if(this.asType().getTypeReferences().size() != out.getTypeReferences().size()) {
+
+        if (this.asType().getTypeReferences().size() != out.getTypeReferences().size()) {
             return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.DIFF_MAIN);
         }
-        
+
         return new MetaComparationResult(this, out, MetaComparationResult.ComparationState.EQU);
-        
+
+    }
+
+    @Override
+    public void mark(String mark) {
+        this.marks.add(mark);
+    }
+
+    @Override
+    public void unmark(String mark) {
+        this.marks.remove(mark);
+    }
+
+    @Override
+    public boolean isMarkedBy(String mark) {
+        return this.marks.contains(mark);
     }
 
 }
