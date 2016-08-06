@@ -6,8 +6,10 @@
 package c1c.meta;
 
 import c1c.meta.generated.MetaObject;
+import c1c.meta.generated.MetaObjectClass;
 import c1c.meta.generated.impl.MetaObjectImpl;
 import c1c.meta.generated.impl.MetaVertualDirectory;
+import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,7 +54,8 @@ public class Selector {
                 return this;
             }
         } else {
-            base = base.getChildrens().stream()
+            base = Lists.newArrayList(base.getChildrens(), base.getTypeReferences()).stream()
+                    .flatMap((lst) -> lst.stream())
                     .filter((ch) -> ch.getName().equals(part))
                     .findFirst().orElse(
                             virtDirCreation 
