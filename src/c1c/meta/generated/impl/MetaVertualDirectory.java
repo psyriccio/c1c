@@ -25,11 +25,15 @@ public class MetaVertualDirectory extends MetaObjectImpl {
 
     public MetaVertualDirectory(String name, String fullName, MetaObject parent, List<MetaObject> childs) {
         this.name = name;
-        try {
-            this.fullName = (String) parent.getClass().getMethod("getFullName", new Class[]{}).invoke(parent, new Object[]{}) + ".[" + name + "]";
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            this.fullName = "<EMPTY>.[" + name + "]";
-            Logger.getLogger(MetaVertualDirectory.class.getName()).log(Level.SEVERE, null, ex);
+        if(parent != null) {
+            try {
+                this.fullName = (String) parent.getClass().getMethod("getFullName", new Class[]{}).invoke(parent, new Object[]{}) + ".[" + name + "]";
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                this.fullName = "<EMPTY>.[" + name + "]";
+                Logger.getLogger(MetaVertualDirectory.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            this.fullName = fullName;
         }
         this.parent = parent;
         this.childs = childs;
