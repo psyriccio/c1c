@@ -210,6 +210,33 @@ public class MetaObjectImpl implements MetaObject {
     }
 
     public void propagateParenthoodInternal(Consumer<Integer> prcProgressConsumer, int count, int counter) {
+        if(this.getObjClass() == MetaObjectClass.Catalog) {
+            Property propName = new PropertyImpl();
+            propName.setFullName(this.getFullName() + ".Наименование");
+            propName.setDescription("Наименование");
+            propName.setName("Наименование");
+            propName.setParent(this);
+            TypeDescription typeDescrName = new TypeDescriptionImpl();
+            typeDescrName.setQLength(this.asCatalog().getDescriptionLength());
+            Type typeName = new TypeImpl();
+            typeName.setName("Строка");
+            typeDescrName.getTypes().add(typeName);
+            propName.setTypeDescription(typeDescrName);
+            this.getChildrens().add(propName);
+            //
+            Property propCode = new PropertyImpl();
+            propCode.setFullName(this.getFullName() + ".Код");
+            propCode.setDescription("Код");
+            propCode.setName("Код");
+            propCode.setParent(this);
+            TypeDescription typeDescrCode = new TypeDescriptionImpl();
+            typeDescrCode.setQLength(this.asCatalog().getCodeLength());
+            Type typeCode = new TypeImpl();
+            typeCode.setName(this.asCatalog().getCodeType());
+            typeDescrCode.getTypes().add(typeCode);
+            propCode.setTypeDescription(typeDescrCode);
+            this.getChildrens().add(propCode);
+        }
         HashMap<String, MetaObject> hm = ALL.getOrDefault(getRoot().getID(), new HashMap<>());
         hm.put(getID(), this);
         ALL.put(getRoot().getID(), hm);
