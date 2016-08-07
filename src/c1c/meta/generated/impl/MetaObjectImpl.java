@@ -222,7 +222,7 @@ public class MetaObjectImpl implements MetaObject {
             typeName.setName("Строка");
             typeDescrName.getTypes().add(typeName);
             propName.setTypeDescription(typeDescrName);
-            this.getChildrens().add(propName);
+            this.asCatalog().getProperties().add(propName);
             //
             Property propCode = new PropertyImpl();
             propCode.setFullName(this.getFullName() + ".Код");
@@ -235,7 +235,7 @@ public class MetaObjectImpl implements MetaObject {
             typeCode.setName(this.asCatalog().getCodeType());
             typeDescrCode.getTypes().add(typeCode);
             propCode.setTypeDescription(typeDescrCode);
-            this.getChildrens().add(propCode);
+            this.asCatalog().getProperties().add(propCode);
         }
         HashMap<String, MetaObject> hm = ALL.getOrDefault(getRoot().getID(), new HashMap<>());
         hm.put(getID(), this);
