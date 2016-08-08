@@ -303,6 +303,20 @@ public class MetaObjectImpl implements MetaObject {
                     }
                 }
             }
+            if (child instanceof TypeDescription) {
+                TypeDescription tpd = (TypeDescription) child;
+                tpd.getTypes().forEach((tp) -> {
+                    MetaObject typeRef = C1.findObjFullName(getRoot().asConf(), tp.getFullName()).orElse(getEMPTY());
+                    if (typeRef != getEMPTY()) {
+                        MetaObject current = child;
+                        while (current != getEMPTY()) {
+                            current.getTypeReferences().add(typeRef);
+                            current = current.getParent();
+                        }
+                    }
+                });
+
+            }
             if (prcProgressConsumer != null) {
                 double cntr = counter;
                 double cnt = count;
