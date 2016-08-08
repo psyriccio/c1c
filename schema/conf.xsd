@@ -51,6 +51,7 @@
   <xs:element name="Catalog">
     <xs:complexType>
       <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="Owner"/>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="Property"/>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="TabularSection"/>
       </xs:sequence>
@@ -65,6 +66,11 @@
       <xs:attribute name="Name" use="required" type="xs:NCName"/>
       <xs:attribute name="ObjectDescription" use="required"/>
       <xs:attribute name="Synonym" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Owner">
+    <xs:complexType>
+      <xs:attribute name="Name" use="required" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="Document">
