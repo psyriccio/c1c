@@ -236,6 +236,19 @@ public class MetaObjectImpl implements MetaObject {
             typeDescrCode.getTypes().add(typeCode);
             propCode.setTypeDescription(typeDescrCode);
             this.asCatalog().getProperties().add(propCode);
+            if(this.asCatalog().isHierarchical()) {
+                Property propParent = new PropertyImpl();
+                propParent.setFullName(this.getFullName() + ".Родитель");
+                propParent.setDescription("Родитель");
+                propParent.setName("Родитель");
+                propParent.setParent(this);
+                TypeDescription typeDescrParent = new TypeDescriptionImpl();
+                Type typeParent = new TypeImpl();
+                typeParent.setName(this.asCatalog().getFullName());
+                typeDescrParent.getTypes().add(typeParent);
+                propParent.setTypeDescription(typeDescrParent);
+                this.asCatalog().getProperties().add(propParent);
+            }
         }
         HashMap<String, MetaObject> hm = ALL.getOrDefault(getRoot().getID(), new HashMap<>());
         hm.put(getID(), this);
