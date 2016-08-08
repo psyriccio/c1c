@@ -9,6 +9,7 @@ import c1c.meta.generated.Enum;
 import c1c.meta.generated.MetaComparationResult;
 import c1c.meta.generated.MetaObject;
 import c1c.meta.generated.MetaObjectClass;
+import c1c.meta.generated.Owner;
 import c1c.meta.generated.Property;
 import c1c.meta.generated.TabularSection;
 import c1c.meta.generated.Type;
@@ -112,6 +113,11 @@ public class MetaObjectImpl implements MetaObject {
     }
 
     @Override
+    public Optional<Owner> asOwerOpt() {
+        return Optional.ofNullable(this instanceof Owner ? (Owner) this : null);
+    }
+
+    @Override
     public Optional<TypeDescription> asTypeDescriptionOpt() {
         return Optional.ofNullable(this instanceof TypeDescription ? (TypeDescription) this : null);
     }
@@ -125,9 +131,10 @@ public class MetaObjectImpl implements MetaObject {
                                         : (this instanceof Catalog) ? MetaObjectClass.Catalog
                                                 : (this instanceof Document) ? MetaObjectClass.Document
                                                         : (this instanceof Type) ? MetaObjectClass.Type
-                                                                : (this instanceof TypeDescription) ? MetaObjectClass.TypeDescription
-                                                                        : (this instanceof TabularSection) ? MetaObjectClass.TabularSection
-                                                                                : (this instanceof Catalog) ? MetaObjectClass.Catalog : null;
+                                                                : (this instanceof Owner) ? MetaObjectClass.Owner
+                                                                        : (this instanceof TypeDescription) ? MetaObjectClass.TypeDescription
+                                                                                : (this instanceof TabularSection) ? MetaObjectClass.TabularSection
+                                                                                        : (this instanceof Catalog) ? MetaObjectClass.Catalog : null;
     }
 
     @Override
@@ -166,6 +173,11 @@ public class MetaObjectImpl implements MetaObject {
     @Override
     public Type asType() {
         return (Type) this;
+    }
+
+    @Override
+    public Owner asOwner() {
+        return (Owner) this;
     }
 
     @Override
@@ -210,7 +222,7 @@ public class MetaObjectImpl implements MetaObject {
     }
 
     public void propagateParenthoodInternal(Consumer<Integer> prcProgressConsumer, int count, int counter) {
-        if(this.getObjClass() == MetaObjectClass.Catalog) {
+        if (this.getObjClass() == MetaObjectClass.Catalog) {
             Property propName = new PropertyImpl();
             propName.setFullName(this.getFullName() + ".Наименование");
             propName.setDescription("Наименование");
@@ -236,7 +248,7 @@ public class MetaObjectImpl implements MetaObject {
             typeDescrCode.getTypes().add(typeCode);
             propCode.setTypeDescription(typeDescrCode);
             this.asCatalog().getProperties().add(propCode);
-            if(this.asCatalog().isHierarchical()) {
+            if (this.asCatalog().isHierarchical()) {
                 Property propParent = new PropertyImpl();
                 propParent.setFullName(this.getFullName() + ".Родитель");
                 propParent.setDescription("Родитель");
@@ -260,6 +272,21 @@ public class MetaObjectImpl implements MetaObject {
             typeDescrHParent.getTypes().add(typeHParent);
             propHParent.setTypeDescription(typeDescrHParent);
             this.asCatalog().getProperties().add(propHParent);
+            if (this.asCatalog().getOwners().size() > 0) {
+                Property propOwner = new PropertyImpl();
+                propOwner.setFullName(this.getFullName() + ".Владелец");
+                propOwner.setDescription("Владелец");
+                propOwner.setName("Владелец");
+                propOwner.setParent(this);
+                TypeDescription typeDescrOwner = new TypeDescriptionImpl();
+                this.asCatalog().getOwners().forEach((owner) -> {
+                    Type typeOwner = new TypeImpl();
+                    typeOwner.setName(owner.getName());
+                    typeDescrOwner.getTypes().add(typeOwner);
+                });
+                propOwner.setTypeDescription(typeDescrOwner);
+                this.asCatalog().getProperties().add(propOwner);
+            }
         }
         HashMap<String, MetaObject> hm = ALL.getOrDefault(getRoot().getID(), new HashMap<>());
         hm.put(getID(), this);
@@ -499,5 +526,5 @@ public class MetaObjectImpl implements MetaObject {
     public Selector selectVD(String expr) {
         return new Selector(this, true).select(expr);
     }
-    
+
 }

@@ -30,6 +30,8 @@ public interface MetaObject {
 
     public Optional<Type> asTypeOpt();
 
+    public Optional<Owner> asOwerOpt();
+    
     public Conf asConf();
 
     public Enum asEnum();
@@ -48,6 +50,8 @@ public interface MetaObject {
 
     public Type asType();
 
+    public Owner asOwner();
+    
     public MetaObjectClass getObjClass();
 
     public MetaObject getEMPTY();

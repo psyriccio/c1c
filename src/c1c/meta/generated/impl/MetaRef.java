@@ -13,6 +13,7 @@ import c1c.meta.generated.Conf;
 import c1c.meta.generated.Document;
 import c1c.meta.generated.Enum;
 import c1c.meta.generated.MetaComparationResult;
+import c1c.meta.generated.Owner;
 import c1c.meta.generated.Property;
 import c1c.meta.generated.TabularSection;
 import c1c.meta.generated.Type;
@@ -100,6 +101,16 @@ public class MetaRef implements MetaObject {
     @Override
     public Selector selectVD(String expr) {
         return (Selector) refPrc(destination.selectVD(expr));
+    }
+
+    @Override
+    public Optional<Owner> asOwerOpt() {
+        return (Optional<Owner>) refPrc(destination.asOwerOpt());
+    }
+
+    @Override
+    public Owner asOwner() {
+        return (Owner) refPrc(destination.asOwner());
     }
 
     public class RefProcessingInfo {
