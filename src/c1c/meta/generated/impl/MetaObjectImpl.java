@@ -249,6 +249,17 @@ public class MetaObjectImpl implements MetaObject {
                 propParent.setTypeDescription(typeDescrParent);
                 this.asCatalog().getProperties().add(propParent);
             }
+            Property propHParent = new PropertyImpl();
+            propHParent.setFullName(this.getFullName() + ".ЭтоГруппа");
+            propHParent.setDescription("ЭтоГруппа");
+            propHParent.setName("ЭтоГруппа");
+            propHParent.setParent(this);
+            TypeDescription typeDescrHParent = new TypeDescriptionImpl();
+            Type typeHParent = new TypeImpl();
+            typeHParent.setName("Булево");
+            typeDescrHParent.getTypes().add(typeHParent);
+            propHParent.setTypeDescription(typeDescrHParent);
+            this.asCatalog().getProperties().add(propHParent);
         }
         HashMap<String, MetaObject> hm = ALL.getOrDefault(getRoot().getID(), new HashMap<>());
         hm.put(getID(), this);
