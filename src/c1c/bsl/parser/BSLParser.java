@@ -20,25 +20,245 @@ public class BSLParser extends BaseParser<Object> {
     public Rule CompilationUnit() {
         return Sequence(
                 Spacing(),
-                ZeroOrMore(VAR, VariableDeclaration()),
+                ZeroOrMore(VariableDeclaration()),
                 UnitMembers(),
                 EOI
         );
     }
 
-    @SuppressNode
     Rule VariableDeclaration() {
         return Sequence(VAR, Identifier(), Optional(EXPORT), SEMI);
     }
-    
-    @SuppressNode
+
     Rule UnitMembers() {
-        return FirstOf(
-                Sequence(SEMI, SEMI),  // FUCK THIS BEGIN FROM HERE!!
-                SEMI
+        return ZeroOrMore(
+                FirstOf(
+                        ProcesureDeclaration(),
+                        FunctionDeclaration()
+                )
         );
     }
-    
+
+    Rule ProcesureDeclaration() {
+        return Sequence(
+                PROC,
+                Identifier(),
+                FormalParameters(),
+                Optional(EXPORT),
+                Block(),
+                ENDPROC
+        );
+    }
+
+    Rule FunctionDeclaration() {
+        return Sequence(
+                FUNC,
+                Identifier(),
+                FormalParameters(),
+                Optional(EXPORT),
+                Block(),
+                ENDFUNC
+        );
+    }
+
+    Rule FormalParameters() {
+        return Sequence(LPAR, Optional(FormalParametersDecl()), RPAR);
+    }
+
+    Rule FormalParametersDecl() {
+        return OneOrMore(
+                Sequence(
+                        Identifier(),
+                        Optional(COMMA, FormalParametersDecl())));
+    }
+
+    Rule Block() {
+        return BlockStatements();
+
+    }
+
+    Rule BlockStatements() {
+        return ZeroOrMore(BlockStatement());
+    }
+
+    Rule BlockStatement() {
+        return FirstOf(
+                Statement(),
+                LocalVariableDeclarationStatement()
+        );
+    }
+
+    Rule LocalVariableDeclarationStatement() {
+        return Sequence(VariableDeclarators(), SEMI);
+    }
+
+    Rule VariableDeclarators() {
+        return Sequence(VariableDeclarator(), ZeroOrMore(SEMI, VariableDeclarator()));
+    }
+
+    Rule VariableDeclarator() {
+        return Sequence(Identifier(), Optional(Sequence(EQU, Expression())));//,VariableInitializer());
+    }
+
+    Rule VariableInitializer() {
+        return null;
+    }
+
+    Rule Statement() {
+        return FirstOf(
+                Sequence(Sequence(Identifier(), COLON), Statement()),
+                Sequence(RETURN, Optional(Expression()), SEMI)
+        );
+    }
+
+    Rule StatementExpression() {
+        return Expression();
+    }
+
+    Rule ConstantExpression() {
+        return Expression();
+    }
+
+    Rule Expression() {
+        return Sequence(
+                ConditionalExpression(),
+                ZeroOrMore(AssignmentOperator(), ConditionalExpression())
+        );
+    }
+
+    Rule ConditionalExpression() {
+        return Sequence(
+                ConditionalOrExpression(),
+                ZeroOrMore(QUERY, Expression(), COLON, ConditionalOrExpression())
+        );
+    }
+
+    Rule ConditionalOrExpression() {
+        return Sequence(
+                ConditionalAndExpression(),
+                ZeroOrMore(OR, ConditionalAndExpression())
+        );
+    }
+
+    Rule ConditionalAndExpression() {
+        return Sequence(
+                InclusiveOrExpression(),
+                ZeroOrMore(AND, InclusiveOrExpression())
+        );
+    }
+
+    Rule InclusiveOrExpression() {
+        return Sequence(
+                ExclusiveOrExpression(),
+                ZeroOrMore(OR, ExclusiveOrExpression())
+        );
+    }
+
+    Rule ExclusiveOrExpression() {
+        return Sequence(
+                AndExpression(),
+                ZeroOrMore(HAT, AndExpression())
+        );
+    }
+
+    Rule AndExpression() {
+        return Sequence(
+                EqualityExpression(),
+                ZeroOrMore(AND, EqualityExpression())
+        );
+    }
+
+    Rule AssignmentOperator() {
+        return FirstOf(EQU, MINUSEQU, DIVEQU, HATEQU);
+    }
+
+    Rule EqualityExpression() {
+        return Sequence(
+                RelationalExpression(),
+                ZeroOrMore(FirstOf(EQU, NOTEQUAL), RelationalExpression())
+        );
+    }
+
+    Rule RelationalExpression() {
+        return ZeroOrMore(
+                FirstOf(LE, GE, LT, GT)
+        );
+    }
+
+    Rule AdditiveExpression() {
+        return Sequence(
+                MultiplicativeExpression(),
+                ZeroOrMore(FirstOf(PLUS, MINUS), MultiplicativeExpression())
+        );
+    }
+
+    Rule MultiplicativeExpression() {
+        return Sequence(
+                UnaryExpression(),
+                ZeroOrMore(FirstOf(STAR, DIV, MOD), UnaryExpression())
+        );
+    }
+
+    Rule UnaryExpression() {
+        return FirstOf(
+                Sequence(PrefixOp(), UnaryExpression()),
+                Sequence(Primary(), ZeroOrMore(Selector()))
+        );
+    }
+
+    Rule Primary() {
+        return FirstOf(
+                ParExpression(),
+                Literal(),
+                Sequence(NEW, Creator())
+        );
+    }
+
+    Rule Creator() {
+        return CreatedName();
+    }
+
+    Rule CreatedName() {
+        return Sequence(
+                Identifier(),
+                ZeroOrMore(DOT, Identifier())
+        );
+    }
+
+    Rule Selector() {
+        return FirstOf(
+                Sequence(DOT, Identifier(), Optional(Arguments())),
+                DimExpr()
+        );
+    }
+
+    Rule DimExpr() {
+        return Sequence(LBRK, Expression(), RBRK);
+    }
+
+    Rule Arguments() {
+        return Sequence(
+                LPAR,
+                Optional(Expression(), ZeroOrMore(COMMA, Expression())),
+                RPAR
+        );
+    }
+
+    Rule ClassType() {
+        return Sequence(
+                Identifier(),
+                ZeroOrMore(DOT, Identifier())
+        );
+    }
+
+    Rule ParExpression() {
+        return Sequence(LPAR, Expression(), RPAR);
+    }
+
+    Rule PrefixOp() {
+        return FirstOf(PLUS, MINUS);
+    }
+
     @SuppressNode
     Rule Spacing() {
         return ZeroOrMore(FirstOf(
@@ -144,15 +364,7 @@ public class BSLParser extends BaseParser<Object> {
     }
 
     Rule Escape() {
-        return Sequence('\\', FirstOf(AnyOf("btnfr\"\'\\"), OctalEscape(), UnicodeEscape()));
-    }
-
-    Rule OctalEscape() {
-        return FirstOf(
-                Sequence(CharRange('0', '3'), CharRange('0', '7'), CharRange('0', '7')),
-                Sequence(CharRange('0', '7'), CharRange('0', '7')),
-                CharRange('0', '7')
-        );
+        return Sequence('\\', FirstOf(AnyOf("btnfr\"\'\\"), UnicodeEscape()));
     }
 
     Rule UnicodeEscape() {
@@ -186,7 +398,7 @@ public class BSLParser extends BaseParser<Object> {
     @SuppressNode
     @DontLabel
     Rule TerminalIgnoreCase(String string, Rule mustNotFollow) {
-        return Sequence(string, TestNot(mustNotFollow), Spacing()).label('\'' + string + '\'');
+        return Sequence(IgnoreCase(string), TestNot(mustNotFollow), Spacing()).label('\'' + string + '\'');
     }
 
     @MemoMismatches
@@ -194,7 +406,7 @@ public class BSLParser extends BaseParser<Object> {
         return Sequence(
                 FirstOf("перем", "прервать", "экспорт", "исключение", "попытка", "вызватьисключение", "продолжить", "функция", "процедура", "для каждого",
                         "конецесли", "цикл", "конеццикла", "иначеесли", "для", "если", "перейти", "выполнить", "новый", "возврат",
-                        "попытка", "пока", "#если", "#конецесли", "#иначе", "конецпроцедуры", "конецфункции"),
+                        "пока", "#если", "#конецесли", "#иначе", "конецпроцедуры", "конецфункции"),
                 TestNot(LetterOrDigit())
         );
     }
@@ -213,7 +425,9 @@ public class BSLParser extends BaseParser<Object> {
     public final Rule TROW = Keyword("вызватьисключение");
     public final Rule CONTINUE = Keyword("продолжить");
     public final Rule FUNC = Keyword("функция");
+    public final Rule ENDFUNC = Keyword("конецфункции");
     public final Rule PROC = Keyword("процедура");
+    public final Rule ENDPROC = Keyword("конецпроцедуры");
     public final Rule FOREACH = Keyword("для каждого");
     public final Rule ENDIF = Keyword("конецесли");
     public final Rule LOOP = Keyword("цикл");
@@ -230,6 +444,8 @@ public class BSLParser extends BaseParser<Object> {
     public final Rule PPRCENDIF = Keyword("#конецесли");
     public final Rule PPRCELSE = Keyword("#иначе");
 
+    public final Rule OR = TerminalIgnoreCase("ИЛИ");
+    public final Rule AND = TerminalIgnoreCase("И");
     public final Rule AT = Terminal("@");
     public final Rule AMP = Terminal("&");
     public final Rule COLON = Terminal(":");
@@ -253,6 +469,7 @@ public class BSLParser extends BaseParser<Object> {
     public final Rule MINUSEQU = Terminal("-=");
     public final Rule MOD = Terminal("%", Ch('='));
     public final Rule NOTEQUAL = Terminal("<>");
+    public final Rule PLUS = Terminal("+");
     public final Rule QUERY = Terminal("?");
     public final Rule RBRK = Terminal("]");
     public final Rule RPAR = Terminal(")");
@@ -260,6 +477,6 @@ public class BSLParser extends BaseParser<Object> {
     public final Rule RWING = Terminal("}");
     public final Rule SEMI = Terminal(";");
     public final Rule STAR = Terminal("*", Ch('='));
-    public final Rule TILDA = Terminal("~");    
-    
+    public final Rule TILDA = Terminal("~");
+
 }
