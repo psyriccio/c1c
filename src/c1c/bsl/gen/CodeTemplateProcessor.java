@@ -22,7 +22,11 @@ import java.util.HashMap;
  *
  * @author psyriccio
  */
-public class CodeGenerator {
+public class CodeTemplateProcessor {
+
+    public static String[] lines(String str) {
+        return str.split("\n");
+    }
 
     public static HashMapBuilder buildHashMap() {
         return new HashMapBuilder();
@@ -60,11 +64,11 @@ public class CodeGenerator {
     private final Template procTpl;
     private final Template sructConstructTpl;
     private final Template forEachTpl;
-
-    public CodeGenerator() throws MalformedTemplateNameException, ParseException, IOException {
+    
+    public CodeTemplateProcessor() throws MalformedTemplateNameException, ParseException, IOException {
         this.fm = new Configuration(Configuration.VERSION_2_3_25);
         this.fm.setIncompatibleImprovements(Configuration.VERSION_2_3_25);
-        this.fm.setClassForTemplateLoading(CodeGenerator.class, "templates/");
+        this.fm.setClassForTemplateLoading(CodeTemplateProcessor.class, "templates/");
         this.fm.setDefaultEncoding("UTF-8");
         this.fm.setWhitespaceStripping(true);
         this.fm.setNumberFormat("0.###");
