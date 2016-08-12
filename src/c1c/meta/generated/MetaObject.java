@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import lombok.Builder;
 
 // Referenced classes of package c1c.meta:
 //            MetaObjectClass
@@ -30,7 +31,7 @@ public interface MetaObject {
 
     public Optional<Type> asTypeOpt();
 
-    public Optional<Owner> asOwerOpt();
+    public Optional<Owner> asOwnerOpt();
     
     public Conf asConf();
 

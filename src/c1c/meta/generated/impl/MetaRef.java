@@ -104,8 +104,8 @@ public class MetaRef implements MetaObject {
     }
 
     @Override
-    public Optional<Owner> asOwerOpt() {
-        return (Optional<Owner>) refPrc(destination.asOwerOpt());
+    public Optional<Owner> asOwnerOpt() {
+        return (Optional<Owner>) refPrc(destination.asOwnerOpt());
     }
 
     @Override

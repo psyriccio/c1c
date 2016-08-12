@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import lombok.Setter;
 
 /**
  *
@@ -24,7 +25,7 @@ import javax.xml.bind.Unmarshaller;
  */
 public class C1 {
 
-    private static Consumer<Exception> exceptionsConsumer;
+    private static @Setter Consumer<Exception> exceptionsConsumer;
     private static JAXBContext jaxbContext = null;
 
     private static void inintJAXBContext() throws JAXBException {
@@ -153,10 +154,6 @@ public class C1 {
                 })
         );
 
-    }
-
-    public static void setExceptionsConsumer(Consumer<Exception> exceptionsConsumer) {
-        C1.exceptionsConsumer = exceptionsConsumer;
     }
 
 }

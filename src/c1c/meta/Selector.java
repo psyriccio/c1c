@@ -6,13 +6,13 @@
 package c1c.meta;
 
 import c1c.meta.generated.MetaObject;
-import c1c.meta.generated.MetaObjectClass;
 import c1c.meta.generated.impl.MetaObjectImpl;
 import c1c.meta.generated.impl.MetaVertualDirectory;
 import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 /**
  *
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class Selector {
 
     private MetaObject base;
-    private final List<MetaObject> selection;
+    private final @Getter List<MetaObject> selection;
     private final boolean virtDirCreation;
 
     private Selector go(String part) {
@@ -82,10 +82,6 @@ public class Selector {
         this.base = base;
         this.selection = new ArrayList<>();
         this.virtDirCreation = virtualDirCreationMode;
-    }
-    
-    public List<MetaObject> getSelection() {
-        return selection;
     }
 
     public Selector select(String expr) {

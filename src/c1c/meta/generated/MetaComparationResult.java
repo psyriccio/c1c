@@ -5,24 +5,27 @@
  */
 package c1c.meta.generated;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  *
  * @author psyriccio
  */
+@AllArgsConstructor
+@Builder
 public class MetaComparationResult {
 
     public enum ComparationState {
         EQU, DIFF_CLASS, DIFF_MAIN, DIFF_SUB
     }
 
-    private final MetaObject in;
-    private final MetaObject out;
-    private final boolean equals;
-    private final ComparationState state;
+    private final @Getter MetaObject in;
+    private final @Getter MetaObject out;
+    private final @Getter boolean equals;
+    private final @Getter ComparationState state;
     private final HashMap<String, MetaComparationResult> subResults;
 
     public MetaComparationResult(MetaObject in, MetaObject out, ComparationState state) {
@@ -42,22 +45,6 @@ public class MetaComparationResult {
         this.equals = (state == ComparationState.EQU);
         this.subResults = new HashMap<>();
         this.subResults.putAll(subResults);
-    }
-
-    public boolean isEquals() {
-        return equals;
-    }
-
-    public ComparationState getState() {
-        return state;
-    }
-
-    public MetaObject getIn() {
-        return in;
-    }
-
-    public MetaObject getOut() {
-        return out;
     }
 
 }

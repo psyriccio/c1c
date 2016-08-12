@@ -26,8 +26,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @XmlAccessorType(XmlAccessType.NONE)
+@Builder
+@AllArgsConstructor
 public class MetaObjectImpl implements MetaObject {
 
     public static final MetaObject EMPTY;
@@ -61,8 +67,8 @@ public class MetaObjectImpl implements MetaObject {
 
     private final UUID id;
     private String rootID = "";
-    private MetaObject parent = EMPTY;
-    private final List<MetaObject> typeReferences;
+    private @Getter @Setter MetaObject parent = EMPTY;
+    private final @Getter List<MetaObject> typeReferences;
     private final List<String> marks;
 
     public MetaObjectImpl() {
@@ -113,7 +119,7 @@ public class MetaObjectImpl implements MetaObject {
     }
 
     @Override
-    public Optional<Owner> asOwerOpt() {
+    public Optional<Owner> asOwnerOpt() {
         return Optional.ofNullable(this instanceof Owner ? (Owner) this : null);
     }
 
@@ -204,16 +210,6 @@ public class MetaObjectImpl implements MetaObject {
                 .stream().flatMap((lst) -> lst instanceof List ? ((List<MetaObject>) lst).stream() : lst instanceof MetaObject ? Stream.of((MetaObject) lst) : null)
                 .peek((MetaObject obj) -> obj.setParent(this))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void setParent(MetaObject parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public MetaObject getParent() {
-        return parent;
     }
 
     @Override
@@ -385,11 +381,6 @@ public class MetaObjectImpl implements MetaObject {
     @Override
     public String getDescription() {
         return "<ABSTRACT>";
-    }
-
-    @Override
-    public List<MetaObject> getTypeReferences() {
-        return this.typeReferences;
     }
 
     @Override

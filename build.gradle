@@ -36,7 +36,9 @@ shadowJar {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.freemarker/freemarker
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.10'
+    // https://mvnrepository.com/artifact/com.github.peichhorn/lombok-pg
     compile group: 'org.freemarker', name: 'freemarker', version: '2.3.25-incubating'
     // https://mvnrepository.com/artifact/org.parboiled/parboiled-core
     compile group: 'org.parboiled', name: 'parboiled-core', version: '1.1.7'
@@ -44,6 +46,8 @@ dependencies {
     compile group: 'org.parboiled', name: 'parboiled-java', version: '1.1.7'
     // https://mvnrepository.com/artifact/org.reflections/reflections
     compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
+    // https://mvnrepository.com/artifact/org.springframework/spring-aop
+    compile group: 'org.springframework', name: 'spring-aop', version: '4.3.2.RELEASE'
     // https://mvnrepository.com/artifact/com.google.guava/guava
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
     compile fileTree(dir: 'lib').matching { include '*.jar'}
