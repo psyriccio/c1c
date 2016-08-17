@@ -188,6 +188,20 @@ public class Build {
                 .__();
     }
 
+    public static CodeProducer tryCatch(String body, CodeProducer catchBody) {
+        return TryCatch.__()
+                .statement(block(body))
+                .catchStatement(catchBody)
+                .__();
+    }
+
+    public static CodeProducer tryCatch(CodeProducer body, String catchBody) {
+        return TryCatch.__()
+                .statement(body)
+                .catchStatement(block(catchBody))
+                .__();
+    }
+    
     public static CodeProducer tryCatch(String body, String catchBody) {
         return TryCatch.__()
                 .statement(block(body))
