@@ -5,8 +5,6 @@ package c1c.bsl.gen;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import freemarker.core.ParseException;
 import freemarker.core.PlainTextOutputFormat;
 import freemarker.template.Configuration;
@@ -68,7 +66,7 @@ public class CodeTemplateProcessor {
     private final Template forLoopTpl;
     private final Template tryCatchTpl;
     private final Template whileLoopTpl;
-    
+
     public CodeTemplateProcessor() throws MalformedTemplateNameException, ParseException, IOException {
         this.fm = new Configuration(Configuration.VERSION_2_3_25);
         this.fm.setIncompatibleImprovements(Configuration.VERSION_2_3_25);
@@ -144,7 +142,20 @@ public class CodeTemplateProcessor {
                 buildHashMap()
                 .add("condition", condition)
                 .add("pos_lines", posLines)
-                .add("neg_lines", 
+                .add("elseif_items", null)
+                .add("neg_lines",
+                        negLines == null ? null : negLines.length == 0 ? null : negLines)
+                .done());
+    }
+
+    public String ifThenElse(String condition, String[] posLines, HashMap<String, String[]> elseIfMap, String[] negLines) throws TemplateException, IOException {
+        return processTemplate(
+                ifThenElseTpl,
+                buildHashMap()
+                .add("condition", condition)
+                .add("pos_lines", posLines)
+                .add("elseif_items", elseIfMap)
+                .add("neg_lines",
                         negLines == null ? null : negLines.length == 0 ? null : negLines)
                 .done());
     }
@@ -165,7 +176,7 @@ public class CodeTemplateProcessor {
                 tryCatchTpl,
                 buildHashMap()
                 .add("lines", lines)
-                .add("catch_lines", 
+                .add("catch_lines",
                         catchLines == null ? null : catchLines.length == 0 ? null : catchLines)
                 .done());
     }
