@@ -8,7 +8,7 @@
 <#list elseif_items as key, value>
 ИначЕсли ${key} Тогда
 <#list value as ei_line>
-    #{ei_line}
+    ${ei_line}
 </#list>
 </#list>
 </#if>
