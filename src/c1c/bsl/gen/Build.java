@@ -241,4 +241,8 @@ public class Build {
         return elif.__();
     }
 
+    public static String[] args(String... arguments) {
+        return arguments;
+    }
+    
 }
