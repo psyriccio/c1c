@@ -89,6 +89,9 @@ public class CodeTemplateProcessor {
         whileLoopTpl = this.fm.getTemplate("whileloop.ftl");
         prePrcIfTpl = this.fm.getTemplate("preprcif.ftl");
         commentTpl = this.fm.getTemplate("comment.ftl");
+        if (Module.TPL == null) {
+            Module.TPL = this;
+        }
     }
 
     public Configuration getFm() {

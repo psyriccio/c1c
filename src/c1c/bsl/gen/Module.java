@@ -42,7 +42,9 @@ public class Module implements CodeProducer {
     @Override
     @SneakyThrows
     public String produce() {
-        Module.TPL = new CodeTemplateProcessor();
+        if(Module.TPL == null) {
+            Module.TPL = new CodeTemplateProcessor();
+        }
         return Lists.newArrayList(
                 headContent, LNEWLINE,
                 content, LNEWLINE,
