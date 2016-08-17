@@ -76,7 +76,7 @@ public class Build {
         }
         return prc.__();
     }
-    
+
     public static ForEach.ForEachBuilder forEach(String varName, String container) {
         return ForEach.__().varName(varName).container(container);
     }
@@ -100,7 +100,7 @@ public class Build {
         }
         return fr.__();
     }
-    
+
     public static ForLoop.ForLoopBuilder forLoop(String varName, String from, String to) {
         return ForLoop.__().varName(varName).from(from).to(to);
     }
@@ -124,7 +124,7 @@ public class Build {
         }
         return frl.__();
     }
-    
+
     public static IfThenElse.IfThenElseBuilder ifThenElse(String condition) {
         return IfThenElse.__().condition(condition);
     }
@@ -144,7 +144,7 @@ public class Build {
         }
         return ite.__();
     }
-    
+
     public static CodeProducer ifThenElse(String condition, CodeProducer posBody, CodeProducer negBody) {
         return IfThenElse.__()
                 .condition(condition)
@@ -244,5 +244,25 @@ public class Build {
     public static String[] args(String... arguments) {
         return arguments;
     }
-    
+
+    public static CodeProducer ppIfThen(String condition, String... bodyParts) {
+        PrePrcIf.PrePrcIfBuilder ite = PrePrcIf.__().condition(condition);
+        for (String part : bodyParts) {
+            ite.posStatement(block(part));
+        }
+        return ite.__();
+    }
+
+    public static CodeProducer ppIfThenElse(String condition, CodeProducer posBody, CodeProducer negBody) {
+        return PrePrcIf.__()
+                .condition(condition)
+                .posStatement(posBody)
+                .negStatement(negBody)
+                .__();
+    }
+
+    public static CodeProducer _return(String value) {
+        return block("Возврат " + value + ";");
+    }
+
 }
