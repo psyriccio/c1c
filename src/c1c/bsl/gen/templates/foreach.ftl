@@ -1,7 +1,9 @@
 <#include "base.ftl">
-<#assign title="foreach">
+<#assign title="foreach"><#compress>
+
 Для Каждого ${item} Из ${container} Цикл
 <#list lines as line>
     ${line}
 </#list>
-КонецЦикла;
+
+КонецЦикла;</#compress>

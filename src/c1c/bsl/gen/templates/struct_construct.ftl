@@ -1,5 +1,5 @@
 <#include "base.ftl">
-<#assign title="struct_construct">
+<#assign title="struct_construct"><#compress>
 <#macro struct_iter map prefix name>
 <#local _map=map _prefix=prefix _name=name>
 <#if _prefix=""><#local _prefix=_name+".">${_name} = Новый Структура;</#if>
@@ -14,4 +14,4 @@
 </#if>
 </#list>
 </#macro>
-<@struct_iter map "" name/>
+<@struct_iter map "" name/></#compress>

@@ -1,5 +1,5 @@
 <#include "base.ftl">
-<#assign title="trycatch">
+<#assign title="trycatch"><#compress>
 Попытка
 <#list lines as line>
     ${line}
@@ -10,4 +10,4 @@
     ${line}
 </#list>
 </#if>
-КонецПопытки;
+КонецПопытки;</#compress>

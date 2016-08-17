@@ -1,5 +1,5 @@
 <#include "base.ftl">
-<#assign title="preprcif">
+<#assign title="preprcif"><#compress>
 #Если ${condition} Тогда
 <#list pos_lines as line>
     ${line}
@@ -10,4 +10,4 @@
     ${line}
 </#list>
 </#if>
-#КонецЕсли
+#КонецЕсли</#compress>

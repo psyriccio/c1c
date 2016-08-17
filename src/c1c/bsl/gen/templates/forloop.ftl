@@ -1,7 +1,7 @@
 <#include "base.ftl">
-<#assign title="forloop">
+<#assign title="forloop"><#compress>
 Для ${variable} = ${from} По ${to} Цикл
 <#list lines as line>
     ${line}
 </#list>
-КонецЦикла;
+КонецЦикла;</#compress>
