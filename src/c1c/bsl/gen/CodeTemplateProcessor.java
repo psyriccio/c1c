@@ -66,6 +66,8 @@ public class CodeTemplateProcessor {
     private final Template forLoopTpl;
     private final Template tryCatchTpl;
     private final Template whileLoopTpl;
+    private final Template prePrcIfTpl;
+    private final Template commentTpl;
 
     public CodeTemplateProcessor() throws MalformedTemplateNameException, ParseException, IOException {
         this.fm = new Configuration(Configuration.VERSION_2_3_25);
@@ -83,7 +85,9 @@ public class CodeTemplateProcessor {
         ifThenElseTpl = this.fm.getTemplate("ifthenelse.ftl");
         forLoopTpl = this.fm.getTemplate("forloop.ftl");
         tryCatchTpl = this.fm.getTemplate("trycatch.ftl");
-        whileLoopTpl = this.fm.getTemplate("whileloop.tpl");
+        whileLoopTpl = this.fm.getTemplate("whileloop.ftl");
+        prePrcIfTpl = this.fm.getTemplate("preprcif.ftl");
+        commentTpl = this.fm.getTemplate("comment.ftl");
     }
 
     public Configuration getFm() {
@@ -186,6 +190,25 @@ public class CodeTemplateProcessor {
                 whileLoopTpl,
                 buildHashMap()
                 .add("condition", condition)
+                .add("lines", lines)
+                .done());
+    }
+
+    public String prePrcIf(String condition, String[] posLines, String[] negLines) throws TemplateException, IOException {
+        return processTemplate(
+                prePrcIfTpl,
+                buildHashMap()
+                .add("condition", condition)
+                .add("pos_lines", posLines)
+                .add("neg_lines",
+                        negLines == null ? null : negLines.length == 0 ? null : negLines)
+                .done());
+    }
+
+    public String comment(String[] lines) throws TemplateException, IOException {
+        return processTemplate(
+                commentTpl,
+                buildHashMap()
                 .add("lines", lines)
                 .done());
     }
