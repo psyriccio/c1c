@@ -188,6 +188,13 @@ public class Build {
                 .__();
     }
 
+    public static CodeProducer tryCatch(String body, String catchBody) {
+        return TryCatch.__()
+                .statement(block(body))
+                .catchStatement(block(catchBody))
+                .__();
+    }
+    
     public static WhileLoop.WhileLoopBuilder whileLoop(String condition) {
         return WhileLoop.__().condition(condition);
     }
