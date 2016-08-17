@@ -152,4 +152,12 @@ public class Build {
         return wl.__();
     }
 
+    public static CodeProducer comment(CodeProducer... comments) {
+        Comment.CommentBuilder cm = Comment.__();
+        for(CodeProducer line : comments) {
+            cm.line(line);
+        }
+        return cm.__();
+    }
+    
 }
