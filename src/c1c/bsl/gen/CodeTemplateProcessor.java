@@ -64,6 +64,10 @@ public class CodeTemplateProcessor {
     private final Template procTpl;
     private final Template sructConstructTpl;
     private final Template forEachTpl;
+    private final Template ifThenElseTpl;
+    private final Template forLoopTpl;
+    private final Template tryCatchTpl;
+    private final Template whileLoopTpl;
     
     public CodeTemplateProcessor() throws MalformedTemplateNameException, ParseException, IOException {
         this.fm = new Configuration(Configuration.VERSION_2_3_25);
@@ -78,6 +82,10 @@ public class CodeTemplateProcessor {
         procTpl = this.fm.getTemplate("proc.ftl");
         sructConstructTpl = this.fm.getTemplate("struct_construct.ftl");
         forEachTpl = this.fm.getTemplate("foreach.ftl");
+        ifThenElseTpl = this.fm.getTemplate("ifthenelse.ftl");
+        forLoopTpl = this.fm.getTemplate("forloop.ftl");
+        tryCatchTpl = this.fm.getTemplate("trycatch.ftl");
+        whileLoopTpl = this.fm.getTemplate("whileloop.tpl");
     }
 
     public Configuration getFm() {
@@ -126,6 +134,47 @@ public class CodeTemplateProcessor {
                 buildHashMap()
                 .add("item", item)
                 .add("container", container)
+                .add("lines", lines)
+                .done());
+    }
+
+    public String ifThenElse(String condition, String[] posLines, String[] negLines) throws TemplateException, IOException {
+        return processTemplate(
+                ifThenElseTpl,
+                buildHashMap()
+                .add("condition", condition)
+                .add("pos_lines", posLines)
+                .add("neg_lines", 
+                        negLines == null ? null : negLines.length == 0 ? null : negLines)
+                .done());
+    }
+
+    public String forLoop(String variable, String from, String to, String[] lines) throws TemplateException, IOException {
+        return processTemplate(
+                forLoopTpl,
+                buildHashMap()
+                .add("variable", variable)
+                .add("from", from)
+                .add("to", to)
+                .add("lines", lines)
+                .done());
+    }
+
+    public String tryCatch(String[] lines, String[] catchLines) throws TemplateException, IOException {
+        return processTemplate(
+                tryCatchTpl,
+                buildHashMap()
+                .add("lines", lines)
+                .add("catch_lines", 
+                        catchLines == null ? null : catchLines.length == 0 ? null : catchLines)
+                .done());
+    }
+
+    public String whileLoop(String condition, String[] lines) throws TemplateException, IOException {
+        return processTemplate(
+                whileLoopTpl,
+                buildHashMap()
+                .add("condition", condition)
                 .add("lines", lines)
                 .done());
     }

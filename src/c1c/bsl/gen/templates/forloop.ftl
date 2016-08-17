@@ -1,6 +1,6 @@
 <#include "base.ftl">
-<#assign title="foreach">
-Для Каждого ${item} Из ${container} Цикл
+<#assign title="forloop">
+Для ${variable} = ${from} По ${to} Цикл
 <#list lines as line>
     ${line}
 </#list>

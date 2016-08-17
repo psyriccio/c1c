@@ -22,25 +22,21 @@ import lombok.Singular;
  */
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true, buildMethodName = "__", builderMethodName = "__")
-public class Procedure implements CodeProducer {
+@Builder(buildMethodName = "__", builderMethodName = "__")
+public class ForLoop implements CodeProducer {
 
-    public enum Type {
-        Proc, Func
-    }
-
-    private @Getter @Setter Type type;
-    private @Getter @Setter String name;
-    private @Getter @Setter String[] params;
-    private @Getter @Setter boolean export;
+    private @Getter @Setter String varName;
+    private @Getter @Setter String from;
+    private @Getter @Setter String to;
+    private @Getter @Setter String container;
     private @Singular("statement") @Getter @Setter List<CodeProducer> body;
-
+    
     @Override
     public String produce() {
         String[] aBody = body.stream().map((prc) -> prc.produce()).collect(Collectors.toList()).toArray(new String[0]);
         try {
-            return Module.TPL.proc(name, params, export, type == Type.Func, aBody);
-        } catch (TemplateException ex) {
+            return Module.TPL.forLoop(varName, from, to, aBody);
+        } catch (TemplateException ex ) {
             throw new RuntimeException("Exeption while processing template: " + ex.getTemplateSourceName() + " >> " + ex.getMessage());
         } catch (IOException ex) {
             throw new RuntimeException("Exeption while processing template: " + ex.getMessage());

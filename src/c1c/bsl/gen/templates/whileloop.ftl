@@ -1,6 +1,6 @@
 <#include "base.ftl">
-<#assign title="foreach">
-Для Каждого ${item} Из ${container} Цикл
+<#assign title="whileloop">
+Пока ${condition} Цикл
 <#list lines as line>
     ${line}
 </#list>
