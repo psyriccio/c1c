@@ -1,6 +1,6 @@
 <#include "base.ftl">
 <#assign title="ifthenelse">
-Если ${contition} Тогда
+Если ${condition} Тогда
 <#list pos_lines as line>
     ${line}
 </#list>
