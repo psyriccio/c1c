@@ -40,10 +40,10 @@ public class Build {
 
     public static CodeProducer module(CodeProducer headDef, CodeProducer staticDef, CodeProducer... members) {
         Module.ModuleBuilder mod = Module.__()
-                .headBlock(headDef);
-        mod.staticBlock(staticDef);
+                .variablesSection(headDef);
+        mod.staticSection(staticDef);
         for (CodeProducer memb : members) {
-            mod.member(memb);
+            mod.def(memb);
         }
         return mod.__();
     }

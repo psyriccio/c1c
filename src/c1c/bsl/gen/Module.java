@@ -31,9 +31,9 @@ public class Module implements CodeProducer {
     public static CodeTemplateProcessor TPL;
 
     private @Getter @Setter String name;
-    private @Singular("headBlock") @Getter List<CodeProducer> headContent = new ArrayList<>();
-    private @Singular("member") @Getter List<CodeProducer> content = new ArrayList<>();
-    private @Singular("staticBlock") @Getter List<CodeProducer> footerContent = new ArrayList<>();
+    private @Singular("variablesSection") @Getter List<CodeProducer> headContent = new ArrayList<>();
+    private @Singular("def") @Getter List<CodeProducer> content = new ArrayList<>();
+    private @Singular("staticSection") @Getter List<CodeProducer> footerContent = new ArrayList<>();
 
     public void acceptChild(CodeProducer child) {
         content.add(child);
