@@ -15,6 +15,7 @@ import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -121,7 +122,7 @@ public class CodeTemplateProcessor {
                 .done());
     }
 
-    public String structConstruct(String name, HashMap<String, Object> map) throws TemplateException, IOException {
+    public String structConstruct(String name, Map<String, Object> map) throws TemplateException, IOException {
         return processTemplate(
                 sructConstructTpl,
                 buildHashMap()

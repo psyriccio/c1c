@@ -5,6 +5,13 @@
  */
 package c1c.bsl.gen;
 
+import freemarker.template.TemplateException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author psyriccio
@@ -286,4 +293,14 @@ public class Build {
         return block("Возврат " + value + ";");
     }
 
+    public static CodeProducer structConstruct(String name, Map<String, Object> structure) {
+        try {
+            return block(Module.TPL.structConstruct(name, structure));
+        } catch (TemplateException ex) {
+            throw new RuntimeException("Exeption while processing template: " + ex.getTemplateSourceName() + " >> " + ex.getMessage());
+        } catch (IOException ex) {
+            throw new RuntimeException("Exeption while processing template: " + ex.getMessage());
+        }
+    }
+    
 }
