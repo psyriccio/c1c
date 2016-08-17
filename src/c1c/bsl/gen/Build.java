@@ -65,6 +65,18 @@ public class Build {
         return prc.__();
     }
 
+    public static CodeProducer proc(String name, String[] args, boolean isFunc, boolean exported, String... bodyParts) {
+        Procedure.ProcedureBuilder prc = Procedure.__()
+                .name(name)
+                .params(args)
+                .export(exported)
+                .type(isFunc ? Procedure.Type.Func : Procedure.Type.Proc);
+        for (String part : bodyParts) {
+            prc.statement(block(part));
+        }
+        return prc.__();
+    }
+    
     public static ForEach.ForEachBuilder forEach(String varName, String container) {
         return ForEach.__().varName(varName).container(container);
     }
@@ -79,6 +91,16 @@ public class Build {
         return fr.__();
     }
 
+    public static CodeProducer forEach(String varName, String container, String... bodyParts) {
+        ForEach.ForEachBuilder fr = ForEach.__()
+                .varName(varName)
+                .container(container);
+        for (String part : bodyParts) {
+            fr.statement(block(part));
+        }
+        return fr.__();
+    }
+    
     public static ForLoop.ForLoopBuilder forLoop(String varName, String from, String to) {
         return ForLoop.__().varName(varName).from(from).to(to);
     }
@@ -93,6 +115,16 @@ public class Build {
         return frl.__();
     }
 
+    public static CodeProducer forLoop(String varName, String from, String to, String... bodyParts) {
+        ForLoop.ForLoopBuilder frl = ForLoop.__()
+                .varName(varName)
+                .from(from).to(to);
+        for (String part : bodyParts) {
+            frl.statement(block(part));
+        }
+        return frl.__();
+    }
+    
     public static IfThenElse.IfThenElseBuilder ifThenElse(String condition) {
         return IfThenElse.__().condition(condition);
     }
@@ -105,6 +137,14 @@ public class Build {
         return ite.__();
     }
 
+    public static CodeProducer ifThen(String condition, String... bodyParts) {
+        IfThenElse.IfThenElseBuilder ite = IfThenElse.__().condition(condition);
+        for (String part : bodyParts) {
+            ite.posStatement(block(part));
+        }
+        return ite.__();
+    }
+    
     public static CodeProducer ifThenElse(String condition, CodeProducer posBody, CodeProducer negBody) {
         return IfThenElse.__()
                 .condition(condition)
@@ -115,7 +155,7 @@ public class Build {
 
     public static CodeProducer ifThenElse(String condition, CodeProducer posBody, ElseIf... elseIfParts) {
         IfThenElse.IfThenElseBuilder eib = IfThenElse.__().condition(condition).posStatement(posBody);
-        for(ElseIf ei : elseIfParts) {
+        for (ElseIf ei : elseIfParts) {
             eib.elseif(ei);
         }
         return eib.__();
@@ -129,6 +169,14 @@ public class Build {
         TryCatch.TryCatchBuilder tsp = TryCatch.__();
         for (CodeProducer part : bodyParts) {
             tsp.statement(part);
+        }
+        return tsp.__();
+    }
+
+    public static CodeProducer trySuppress(String... bodyParts) {
+        TryCatch.TryCatchBuilder tsp = TryCatch.__();
+        for (String part : bodyParts) {
+            tsp.statement(block(part));
         }
         return tsp.__();
     }
@@ -152,12 +200,45 @@ public class Build {
         return wl.__();
     }
 
+    public static CodeProducer whileLoop(String condition, String... bodyParts) {
+        WhileLoop.WhileLoopBuilder wl = WhileLoop.__().condition(condition);
+        for (String part : bodyParts) {
+            wl.statement(block(part));
+        }
+        return wl.__();
+    }
+
     public static CodeProducer comment(CodeProducer... comments) {
         Comment.CommentBuilder cm = Comment.__();
-        for(CodeProducer line : comments) {
+        for (CodeProducer line : comments) {
             cm.line(line);
         }
         return cm.__();
     }
-    
+
+    public static CodeProducer comment(String... comments) {
+        Comment.CommentBuilder cm = Comment.__();
+        for (String line : comments) {
+            cm.line(block(line));
+        }
+
+        return cm.__();
+    }
+
+    public static ElseIf elseIf(String condition, CodeProducer... bodyParts) {
+        ElseIf.ElseIfBuilder elif = ElseIf.__().condition(condition);
+        for (CodeProducer part : bodyParts) {
+            elif.statement(part);
+        }
+        return elif.__();
+    }
+
+    public static ElseIf elseIf(String condition, String... bodyParts) {
+        ElseIf.ElseIfBuilder elif = ElseIf.__().condition(condition);
+        for (String part : bodyParts) {
+            elif.statement(block(part));
+        }
+        return elif.__();
+    }
+
 }
