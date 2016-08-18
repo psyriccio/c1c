@@ -31,6 +31,14 @@ public class Build {
         return bld.__();
     }
 
+    public static CodeProducer block(CodeProducer... parts) {
+        Block.BlockBuilder blk = Block.__();
+        for(CodeProducer part : parts) {
+            blk.statement(part.produce());
+        }
+        return blk.__();
+    }
+    
     public static Module.ModuleBuilder module() {
         return Module.__();
     }
