@@ -7,6 +7,7 @@ package c1c.bsl.gen;
 
 import freemarker.template.TemplateException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -33,12 +34,12 @@ public class Build {
 
     public static CodeProducer block(CodeProducer... parts) {
         Block.BlockBuilder blk = Block.__();
-        for(CodeProducer part : parts) {
+        for (CodeProducer part : parts) {
             blk.statement(part.produce());
         }
         return blk.__();
     }
-    
+
     public static Module.ModuleBuilder module() {
         return Module.__();
     }
@@ -213,14 +214,14 @@ public class Build {
                 .catchStatement(block(catchBody))
                 .__();
     }
-    
+
     public static CodeProducer tryCatch(String body, String catchBody) {
         return TryCatch.__()
                 .statement(block(body))
                 .catchStatement(block(catchBody))
                 .__();
     }
-    
+
     public static WhileLoop.WhileLoopBuilder whileLoop(String condition) {
         return WhileLoop.__().condition(condition);
     }
@@ -298,6 +299,49 @@ public class Build {
         return block("Возврат " + value + ";");
     }
 
+    public static CodeProducer _say(String msg) {
+        return block("Сообщить(" + msg + ");");
+    }
+
+    public static CodeProducer _say(CodeProducer msg) {
+        return block("Сообщить(" + msg.produce() + ");");
+    }
+
+    public static CodeProducer _say(String... msgs) {
+        Block.BlockBuilder blk = Block.__();
+        for (String msg : msgs) {
+            blk.statement("Сообщить(" + msg + ");");
+        }
+        return blk.__();
+    }
+
+    public static CodeProducer _say(CodeProducer... msgs) {
+        Block.BlockBuilder blk = Block.__();
+        for (CodeProducer msg : msgs) {
+            blk.statement("Сообщить(" + msg.produce() + ");");
+        }
+        return blk.__();
+    }
+
+    public static CodeProducer _say(boolean quoted, String delimitter, CodeProducer... parts) {
+        return block(
+                "Сообщить("
+                + (quoted ? "\"" : "")
+                + Arrays.asList(parts).stream()
+                .map((prod) -> prod.produce())
+                .reduce("", (acc, itm) -> acc.isEmpty() ? acc.concat(itm) : acc.concat(delimitter).concat(itm))
+                + (quoted ? "\"" : "") + ");");
+    }
+
+    public static CodeProducer _say(boolean quoted, String delimitter, String... parts) {
+        return block(
+                "Сообщить("
+                + (quoted ? "\"" : "")
+                + Arrays.asList(parts).stream()
+                .reduce("", (acc, itm) -> acc.isEmpty() ? acc.concat(itm) : acc.concat(delimitter).concat(itm))
+                + (quoted ? "\"" : "") + ");");
+    }
+
     public static CodeProducer structConstruct(String name, Map<String, Object> structure) {
         try {
             return block(Module.TPL.structConstruct(name, structure));
@@ -307,5 +351,5 @@ public class Build {
             throw new RuntimeException("Exeption while processing template: " + ex.getMessage());
         }
     }
-    
+
 }
