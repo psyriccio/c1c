@@ -284,6 +284,20 @@ public class MetaObjectImpl implements MetaObject {
                 this.asCatalog().getProperties().add(propOwner);
             }
         }
+        if (this.getObjClass() == MetaObjectClass.Catalog) {
+            Property propDate = new PropertyImpl();
+            propDate.setFullName(this.getFullName() + ".Дата");
+            propDate.setDescription("Дата");
+            propDate.setName("Дата");
+            propDate.setParent(this);
+            TypeDescription typeDescrDate = new TypeDescriptionImpl();
+            Type typeDate = new TypeImpl();
+            typeDate.setName("Дата");
+            typeDescrDate.getTypes().add(typeDate);
+            propDate.setTypeDescription(typeDescrDate);
+            this.asDocument().getProperties().add(propDate);
+
+        }
         HashMap<String, MetaObject> hm = ALL.getOrDefault(getRoot().getID(), new HashMap<>());
         hm.put(getID(), this);
         ALL.put(getRoot().getID(), hm);
