@@ -284,7 +284,7 @@ public class MetaObjectImpl implements MetaObject {
                 this.asCatalog().getProperties().add(propOwner);
             }
         }
-        if (this.getObjClass() == MetaObjectClass.Catalog) {
+        if (this.getObjClass() == MetaObjectClass.Document) {
             Property propDate = new PropertyImpl();
             propDate.setFullName(this.getFullName() + ".Дата");
             propDate.setDescription("Дата");
