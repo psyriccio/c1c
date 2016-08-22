@@ -12,6 +12,7 @@ import c1c.meta.generated.impl.MetaObjectImpl;
 import c1c.meta.generated.impl.MetaVertualDirectory;
 import com.google.common.collect.Lists;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -153,7 +154,7 @@ public class C1 {
                                 fullName,
                                 fullName,
                                 conf,
-                                null
+                                new ArrayList<>()
                         )
                 ) != MetaObjectImpl.EMPTY
                         ? referencedFunctions.getOrDefault(fullName, MetaObjectImpl.EMPTY) : MetaObjectImpl.EMPTY)
