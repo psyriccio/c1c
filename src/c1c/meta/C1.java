@@ -8,6 +8,8 @@ package c1c.meta;
 import c1c.meta.generated.MetaObject;
 import c1c.meta.generated.Conf;
 import c1c.meta.generated.impl.JAXBContextFactory;
+import c1c.meta.generated.impl.MetaObjectImpl;
+import c1c.meta.generated.impl.MetaVertualDirectory;
 import com.google.common.collect.Lists;
 import java.io.File;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ public class C1 {
 
     private static @Setter Consumer<Exception> exceptionsConsumer;
     private static JAXBContext jaxbContext = null;
+    private static HashMap<String, MetaObject> referencedFunctions = new HashMap<>();
 
     private static void inintJAXBContext() throws JAXBException {
         if (jaxbContext == null) {
@@ -66,9 +69,9 @@ public class C1 {
                 exceptionsConsumer.accept(ex);
             }
         }
-        
+
         return Optional.ofNullable(null);
-        
+
     }
 
     public static Optional<MetaObject> unmarshall(File file, Consumer<Integer> progressPercentageConsumer) {
@@ -143,7 +146,18 @@ public class C1 {
 
     public static Optional<MetaObject> findObjFullName(Conf conf, String fullName) {
         return Optional.ofNullable(
-                conf.getALL().values().stream()
+                (fullName.contains("(") && fullName.contains(")"))
+                ? (referencedFunctions.put(
+                        fullName,
+                        new MetaVertualDirectory(
+                                fullName,
+                                fullName,
+                                conf,
+                                null
+                        )
+                ) != MetaObjectImpl.EMPTY
+                        ? referencedFunctions.getOrDefault(fullName, MetaObjectImpl.EMPTY) : MetaObjectImpl.EMPTY)
+                : (conf.getALL().values().stream()
                 .filter((obj) -> obj.getFullName().equals(fullName))
                 .findFirst().orElseGet(() -> {
                     if (exceptionsConsumer != null) {
@@ -151,7 +165,7 @@ public class C1 {
                                 new RuntimeException("Cant find object " + fullName));
                     }
                     return null;
-                })
+                }))
         );
 
     }
